@@ -1,0 +1,7 @@
+login:
+  username: fakeuser
+  password: fakepass
+  
+sheets:  
+  - name: non_existant_spreadsheet
+    key: key_google_doc_key
