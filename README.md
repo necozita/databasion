@@ -23,7 +23,7 @@ None of this would really work if there weren't some conventions in place.  The 
 
 At the highest level there needs to be a worksheet named __Database__.  This is simply a master list of related spreadsheets, and what database they correspond to (for split table designs).  The column names are required.
 
-#### Database
+### Database
 | spreadsheet | database| username| password| adapter| host     | port| options
 |:------------|:--------|:--------|:--------|:-------|:---------|:----|:-------
 | superheroes | db1     | dbuser  | dbuser  | mysql  | 127.0.0.1|     |        
@@ -32,7 +32,7 @@ The options column currently support's __force__, which tells the database to dr
 
 Next we define the actual table spreadsheets.
 
-#### Superheroes
+### Superheroes
 
 | column0  |             |              |                    
 |:---------|:------------|:-------------|:-------------------
@@ -45,7 +45,7 @@ Next we define the actual table spreadsheets.
 |          | 2           | Superman     | Invincible         
 |          | 3           | Batman       | Rich               
 
-#### Keywords
+### Keywords
 
 * table - The name of the table, and an optional comma delimited 'false' if the table name should not be auto-pluralized.
 * field - The name of the table column.
@@ -67,21 +67,23 @@ __Ruby Migration Types__
 * time
 * timestamp
 
-#### Columns
+### Columns
 Currently column0 is reserved for keywords and comments.
 
 If something besides a keyword is written in column0, that row is ignored and will not be used.  This is useful if you need to edit out some data.
 
-#### Rows
+### Rows
 Row0 is another reserved space.  If any text is written in a column (with the exception of column0), that column will be ignored.  This is useful for editing out columns that one doesn't currently want in the database.  Feature branches get bonus points.
 
 ## YAML Configuration
 
-#### Google
+### Google
 First copy example.google.yml to google.yml, and then edit it's values.
 
 __login__: A valid Google username and password.
+
 __sheets__: A list of the keys gleaned from the Google Docs URL, and a human readable name.
+
 __output__: Where to output the relevant data.
 
 ## Roadmap
