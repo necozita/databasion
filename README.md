@@ -28,7 +28,7 @@ At the highest level there needs to be a worksheet named __Database__.  This is 
 |:------------|:--------|:--------|:--------|:-------|:---------|:----|:-------
 | superheroes | db1     | dbuser  | dbuser  | mysql  | 127.0.0.1|     |        
 
-The options column currently support's __force__, which tells the database to drop and recreate the database.
+The options column currently support's __force__, which tells the database to drop and recreate the table.
 
 Next we define the actual table spreadsheets.
 
@@ -77,19 +77,19 @@ Row0 is another reserved space.  If any text is written in a column (with the ex
 
 ## Roadmap
 
+__0.0.2__
+
+* Add ability to read existing tables, and make relative alter table migration scripts.
+
 __0.0.1__
 
 * <del>Write this documentation.</del>
 * <del>Add table name specification.</del>
-* Add database level table relationships.
-* Spit out ActiveRecord Models for migrations.
+* <del>Add database level table relationships.</del>
+* <del>Spit out ActiveRecord Models for migrations.</del>
 * Create Ruby migration script.
 * Add ability to read and update existing data.
 * Build Rakefile usage suite.
-
-__0.0.2__
-
-* Add ability to read existing tables, and make relative alter table migration scripts.
 
 ## Testing
 Currently Databasion uses the cucumber test suite.  Any patches or pull requests must have a corresponding Feature, and all tests must pass.
