@@ -24,25 +24,26 @@ None of this would really work if there weren't some conventions in place.  The 
 At the highest level there needs to be a worksheet named __Database__.  This is simply a master list of related spreadsheets, and what database they correspond to (for split table designs).  The column names are required.
 
 #### Database
-| spreadsheet | database| username| password| driver| hostname | port| options|
-|:------------|:--------|:--------|:--------|:------|:---------|:----|:-------|
-| superheroes | db1     | dbuser  | dbuser  | mysql | 127.0.0.1|     |        |
+| spreadsheet | database| username| password| driver| hostname | port| options
+|:------------|:--------|:--------|:--------|:------|:---------|:----|:-------
+| superheroes | db1     | dbuser  | dbuser  | mysql | 127.0.0.1|     |        
 
 The options column currently support's __force__, which tells the database to drop and recreate the database.
 
-#### Superheroes
 Next we define the actual table spreadsheets.
 
-| column0  |             |              |                    |
-|:---------|:------------|:-------------|:-------------------|
-|          |             |              |                    |
-| comment  |             |              |                    |
-| table    | superheroes |              |                    |
-| field    | id          | name         | power              |
-| type     | integer     | string, 20   | string, 20, Wimp   |
-|          | 1           | Brian Jones  | Ruby Hacker        |
-|          | 2           | Superman     | Invincible         |
-|          | 3           | Batman       | Rich               |
+#### Superheroes
+
+| column0  |             |              |                    
+|:---------|:------------|:-------------|:-------------------
+|          |             |              |                    
+| comment  |             |              |                    
+| table    | superheroes |              |                    
+| field    | id          | name         | power              
+| type     | integer     | string, 20   | string, 20, Wimp   
+|          | 1           | Brian Jones  | Ruby Hacker        
+|          | 2           | Superman     | Invincible         
+|          | 3           | Batman       | Rich               
 
 #### Keywords
 
@@ -67,12 +68,12 @@ __Ruby Migration Types__
 * timestamp
 
 #### Columns
-Currently column0 is reserved for key words and comments.
+Currently column0 is reserved for keywords and comments.
 
 If something besides a keyword is written in column0, that row is ignored and will not be used.  This is useful if you need to edit out some data.
 
 #### Rows
-Row0 is another reserved space.  If any text is written in a column (with the exception of column0), that column will be ignored.  This is useful for editing out columns that one doesn't currently want in the database.
+Row0 is another reserved space.  If any text is written in a column (with the exception of column0), that column will be ignored.  This is useful for editing out columns that one doesn't currently want in the database.  Feature branches get bonus points.
 
 ## Roadmap
 
@@ -95,7 +96,7 @@ Currently Databasion uses the cucumber test suite.  Any patches or pull requests
 
 ## Author
 
-__Brian Jones__ - Server Engineer [Istpika](http://www.istpika.com)
+__Brian Jones__ - Server Engineer, [Istpika](http://www.istpika.com)
 
-* Personal: <mojobojo@gmail.com>
 * Work: <brian.jones@istpika.com>
+* Personal: <mojobojo@gmail.com>
