@@ -12,16 +12,28 @@ Usage:
     databasion [options]
 where [options] are:
   EOS
+  opt :create, "Create a base deploy directory", :type => String
   opt :config, "Path to YAML config", :type => String
   opt :system, "google, excel, migrate", :type => String
   opt :migrate, "Migrate after Googlizing or Excelizing"
 end
-Trollop::die :config, "A YAML config must be specified" if opts[:config].nil?
-Trollop::die :system, "System requires a parameter" if opts[:system].nil?
+Trollop::die :config, "A YAML config must be specified" if opts[:config].nil? and opts[:create].nil?
+Trollop::die :system, "System requires a parameter" if opts[:system].nil? and opts[:create].nil?
 
-if opts[:system] and opts[:config]
-  Databasion.databate(opts[:system], opts[:config])
-  if opts[:migrate] and opts[:system] != 'migrate'
-    Databasion.databate('migrate', opts[:config])
+if opts[:create]
+  dir = Dir.pwd
+  if File.exist?(dir + "/" + opts[:create])
+    puts "A directory with the name %s already exists" % opts[:create]
+  else
+    FileUtils.mkdir dir + "/" + opts[:create]
+    FileUtils.mkdir dir + "/" + "%s/config" % opts[:create]
+    FileUtils.cp dir + "/" + "config/example.google.yml", dir + "/" + "%s/config/google.yml" % opts[:create]
+  end
+else
+  if opts[:system] and opts[:config]
+    Databasion.databate(opts[:system], opts[:config])
+    if opts[:migrate] and opts[:system] != 'migrate'
+      Databasion.databate('migrate', opts[:config])
+    end
   end
 end
