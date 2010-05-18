@@ -18,8 +18,6 @@ end
 
 Jeweler::GemcutterTasks.new
 
-task :test do
-  system 'cucumber'
-end
+Dir['lib/tasks/**/*.rake'].each { |rake| load rake }
 
-task :default  => :test
+task :default  => [:databasion, :test]

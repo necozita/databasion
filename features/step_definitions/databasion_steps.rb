@@ -1,7 +1,7 @@
 require 'lib/databasion'
 
 Given /there is an actual yaml config file for (.*)/ do |name|
-  @config = YAML.load(File.open('config/google.yml'))
+  @config = 'config/google.yml'
 end
 
 When /the user runs databate for (.*)/ do |name|

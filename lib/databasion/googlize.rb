@@ -9,7 +9,7 @@ module Databasion
     @@master_sheet = 'Database'
     
     def self.config?
-      raise 'Googlize cannot load without a config.  Databasion::Googlize.config = /path/to/config.yml' unless defined?(@@config)
+      raise 'Googlize cannot load without a config.' unless defined?(@@config)
       true
     end
     

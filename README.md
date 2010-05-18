@@ -75,6 +75,15 @@ If something besides a keyword is written in column0, that row is ignored and wi
 #### Rows
 Row0 is another reserved space.  If any text is written in a column (with the exception of column0), that column will be ignored.  This is useful for editing out columns that one doesn't currently want in the database.  Feature branches get bonus points.
 
+## YAML Configuration
+
+#### Google
+First copy example.google.yml to google.yml, and then edit it's values.
+
+__login__: A valid Google username and password.
+__sheets__: A list of the keys gleaned from the Google Docs URL, and a human readable name.
+__output__: Where to output the relevant data.
+
 ## Roadmap
 
 __0.0.2__
