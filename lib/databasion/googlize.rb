@@ -52,21 +52,31 @@ module Databasion
     def self.process
       @@config['sheets'].each do |token|
         spreadsheet = @@session.spreadsheet_by_key(token['key'])
-        master_list = get_master(spreadsheet)
+        master_list  = get_master(spreadsheet)
         spreadsheet.worksheets.each do |worksheet|
-          next unless master_list.include?(worksheet.title)
+          next unless master_list.collect { |row| row['spreadsheet'] }.include?(worksheet.title)
           data_hash = parse(worksheet)
+          data_hash['connection'] = master_list.collect { |row| row if row['spreadsheet'] == data_hash['name'] }.reject { |d| d.nil? }[0]
           Databasion::Yamalize.yamlbate(data_hash, @@config['output']['yaml_path'])
         end
       end
     end
     
     def self.get_master(spreadsheet)
-      master_list = Array.new
+      master_list = []
+      header_info = nil
       spreadsheet.worksheets.each do |worksheet|
         if worksheet.title == @@master_sheet
-          worksheet.rows.each do |row|
-            master_list.push row.to_s
+          worksheet.rows.each_with_index do |row, index|
+            if index == 0
+              header_info = row
+              next
+            end
+            r = {}
+            header_info.each_with_index do |h, i|
+              r[h.strip] = row[i]
+            end
+            master_list.push r
           end
           break
         end
@@ -76,16 +86,25 @@ module Databasion
     end
     
     def self.parse(worksheet)
-      fields  = Array.new
-      types   = Array.new
-      data    = Array.new
+      name    = ''
+      plural  = true
+      fields  = []
+      types   = []
+      data    = []
 
-      ignore_cols = Array.new
+      ignore_cols = []
       
       worksheet.rows.each_with_index do |row, index|
         next if (row.reject { |s| s.strip.empty? }).size == 0
 
         case row[0]
+        when "table"
+          if d = row[1].split(",")
+            name = d[0]
+            plural = false if d[1] == 'false'
+          else
+            name = row[1]
+          end
         when "field"
           row.each do |field|
             fields.push field unless field.empty?
@@ -106,7 +125,8 @@ module Databasion
       end
 
       {
-        'name'        => worksheet.title,
+        'name'        => name,
+        'plural'      => plural,
         'fields'      => fields[1..fields.size],
         'types'       => types[1..types.size],
         'data'        => data,

@@ -52,15 +52,15 @@ module Databasion
     
     def self.write(migration, file_name)
       check_output_path
-      f = File.new("%s/%s_%s.rb" % [@@config['output']['migration_path'], @@migration_start, file_name], 'w')
+      f = File.new("%s/%s_%s.rb" % [@@config['output']['migrations']['path'], @@migration_start, file_name], 'w')
       f.write(migration)
       f.close
       @@migration_start += 1
     end
 
     def self.check_output_path
-      unless File.exist?(@@config['output']['migration_path'])
-        FileUtils.mkdir_p(@@config['output']['migration_path'])
+      unless File.exist?(@@config['output']['migrations']['path'])
+        FileUtils.mkdir_p(@@config['output']['migrations']['path'])
       end
     end
     

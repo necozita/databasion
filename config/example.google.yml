@@ -5,3 +5,9 @@ login:
 sheets:  
   - name: non_existant_spreadsheet
     key: key_google_doc_key
+    
+output:
+  yaml_path: 'data'
+  migrations:
+    path: 'migrations'
+    models: 'migrations/models'

@@ -6,3 +6,4 @@ Feature: Convert parsed hash into YAML
     Given a chunk of google data
     When we parse it
     Then it should create a relevant YAML file
+    And should contain the correct data

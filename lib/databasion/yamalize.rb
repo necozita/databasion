@@ -7,7 +7,7 @@ module Databasion
     def self.yamlbate(data_hash, output_path=nil)
       raise YamalizeError, 'Databasion::Yamalize requires an output path.' if output_path.nil?
       @@output_path = output_path
-      
+
       yaml_output = process(data_hash)
       write(data_hash['name'], yaml_output)
     end
@@ -19,13 +19,17 @@ module Databasion
     end
     
     def self.database_meta(data_hash)
-      yaml_output = "meta: \n  name: %s\n  fields: \n" % data_hash['name']
+      yaml_output = "meta: \n  name: %s\n  plural: %s\n  fields: \n" % [data_hash['name'], data_hash['plural']]
       data_hash['fields'].each_with_index do |field, index|
         next if data_hash['ignore_cols'].include?(index)
         type_data = data_hash['types'][index].split(',')
         yaml_output += "    - field: %s\n      type: %s\n" % [field, type_data[0]]
         yaml_output += "      size: %s\n" % type_data[1] if type_data[1]
         yaml_output += "      default: %s\n" % type_data[2] if type_data[2]
+      end
+      yaml_output += "  connection:\n"
+      data_hash['connection'].each do |key, value|
+        yaml_output += "    %s: %s\n" % [key, value] unless ['spreadsheet', 'options'].include?(key)
       end
       yaml_output += "\n"
     end
