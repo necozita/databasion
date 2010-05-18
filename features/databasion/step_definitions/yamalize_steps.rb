@@ -9,7 +9,7 @@ Given /a chunk of (.*) data/ do |name|
     'types'       => ["integer", "string, 20", "string, 40"],
     'data'        => [[1, "Brian Jones", "Super Intelligence"], [2, "Superman", "Invincible"], [3, "Batman", "Strength"]],
     'ignore_cols' => [2],
-    'connection'  => []
+    'connection'  => [{'database' => 'moon'}]
   }
 end
 

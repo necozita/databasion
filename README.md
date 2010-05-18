@@ -24,9 +24,9 @@ None of this would really work if there weren't some conventions in place.  The 
 At the highest level there needs to be a worksheet named __Database__.  This is simply a master list of related spreadsheets, and what database they correspond to (for split table designs).  The column names are required.
 
 #### Database
-| spreadsheet | database| username| password| driver| hostname | port| options
-|:------------|:--------|:--------|:--------|:------|:---------|:----|:-------
-| superheroes | db1     | dbuser  | dbuser  | mysql | 127.0.0.1|     |        
+| spreadsheet | database| username| password| adapter| host     | port| options
+|:------------|:--------|:--------|:--------|:-------|:---------|:----|:-------
+| superheroes | db1     | dbuser  | dbuser  | mysql  | 127.0.0.1|     |        
 
 The options column currently support's __force__, which tells the database to drop and recreate the database.
 
@@ -80,7 +80,7 @@ Row0 is another reserved space.  If any text is written in a column (with the ex
 __0.0.1__
 
 * <del>Write this documentation.</del>
-* Add table name specification.
+* <del>Add table name specification.</del>
 * Add database level table relationships.
 * Spit out ActiveRecord Models for migrations.
 * Create Ruby migration script.

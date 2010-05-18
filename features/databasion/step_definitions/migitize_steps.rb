@@ -10,7 +10,7 @@ Given /a complete set of YAML definitions/ do
     'types'       => ["integer", "string, 20", "string, 40"],
     'data'        => [[1, "Brian Jones", "Super Intelligence"], [2, "Superman", "Invincible"], [3, "Batman", "Strength"]],
     'ignore_cols' => [2],
-    'connection'  => []
+    'connection'  => [{'database' => 'moon'}]
   }
   Databasion::Yamalize.yamlbate(@parse_data, @config['output']['yaml_path'])
 
