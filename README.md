@@ -96,8 +96,8 @@ __0.0.1__
 * <del>Add table name specification.</del>
 * <del>Add database level table relationships.</del>
 * <del>Spit out ActiveRecord Models for migrations.</del>
-* Create Ruby migration script.
-* Add ability to read and update existing data.
+* <del>Create Ruby migration script.</del> Still needs polished.
+* <del>Add ability to read and update existing data.</del>
 * <del>Build a command line tool.</del>
 * Add logging.
 
