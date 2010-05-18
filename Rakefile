@@ -12,7 +12,8 @@ Jeweler::Tasks.new do |gem|
 
   gem.add_dependency('activerecord', '>= 2.3.5')
   gem.add_dependency('activesupport', '>= 2.3.5')
-  gem.add_dependency('google-spreadsheet-ruby', '0.1.1')
+  gem.add_dependency('google-spreadsheet-ruby', '>= 0.1.1')
+  gem.add_dependency('spreadsheet', '>= 0.6.4.1')
 end
 
 Jeweler::GemcutterTasks.new
