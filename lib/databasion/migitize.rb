@@ -9,7 +9,7 @@ module Databasion
     @@migration_start = 100
     
     def self.migrabate(file_list=[], config=nil)
-      raise MigitizeError, 'Databasion::Migitize requires an array list of files.' if file_list.empty?
+      raise MigitizeError, 'Databasion::Migitize requires an array list of files.  Try Yamalizing first.' if file_list.empty?
       raise MigitizeError, 'Databasion::Migitize requires a parsed YAML config.' if config.nil?
       @@config = config
       parse(file_list)
@@ -29,7 +29,7 @@ module Databasion
     end
     
     def self.migration_class(meta)
-      migration = "class %s < ActiveRecord::Migration\n" % meta['name'].camelize.pluralize
+      migration = "class %sMigration < ActiveRecord::Migration\n" % meta['name'].camelize
       migration += migration_up(meta)
       migration += migration_down(meta)
       migration += "end\n"

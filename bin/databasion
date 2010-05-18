@@ -1,6 +1,27 @@
 #!/usr/bin/env ruby
 $:.unshift(File.dirname(__FILE__) + '/../lib') unless $:.include?(File.dirname(__FILE__) + '/../lib')
 
+require 'trollop'
 require 'databasion'
 
-Databasion.databate(ARGV[0], ARGV[1])
+opts = Trollop::options do
+  banner <<-EOS
+Databasion - A Google Spreadsheet/Excel -> YAML -> Ruby Migration Database Tool
+
+Usage:
+    databasion [options]
+where [options] are:
+  EOS
+  opt :config, "Path to YAML config", :type => String
+  opt :system, "google, excel, migrate", :type => String
+  opt :migrate, "Migrate after Googlizing or Excelizing"
+end
+Trollop::die :config, "A YAML config must be specified" if opts[:config].nil?
+Trollop::die :system, "System requires a parameter" if opts[:system].nil?
+
+if opts[:system] and opts[:config]
+  Databasion.databate(opts[:system], opts[:config])
+  if opts[:migrate] and opts[:system] != 'migrate'
+    Databasion.databate('migrate', opts[:config])
+  end
+end

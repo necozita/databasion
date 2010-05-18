@@ -1,41 +1,48 @@
 require 'rubygems'
 
 APP_PATH = File.dirname(File.expand_path(__FILE__))
+$: << APP_PATH
+Dir["#{APP_PATH}/**/lib"].each { |p| $: << p }
 
 module Databasion
 
   class DatabasionError < StandardError; end
   
-  def self.help
-    puts "Usage:"
-    puts " databasion <system> <config path>\n\n"
-    puts "Systems:"
-    puts " - google : loads data out of Google Spreadsheets"
-    puts " - excel  : loads data out of an Excel Spreadsheet"
-    puts "\n"
-    Kernel.exit(0)
-  end
-
+  @@config = nil
+  
   def self.databate(system, config=nil)
-    help if system.nil? and config.nil?
+    raise DatabasionError, 'Databasion requires a YAML config file path.' if config.nil?
+    @@config = YAML.load(File.open(config))
     
     case system
     when "google"
-      raise DatabasionError, 'Googlize requires a YAML config file path.' if config.nil?
-      googlize(config)
+      googlize
     when "excel"
-      raise DatabasionError, 'Excelize requires a YAML config file path.' if config.nil?
       excelize
+    when "migrate"
+      migrate
     end
   end
   
-  def self.googlize(config)
-    Databasion::Googlize.config = YAML.load(File.open(config))
+  def self.googlize
+    Databasion::Googlize.config = @@config
     Databasion::Googlize.googlebate
   end
 
   def self.excelize
     Databasion::Excelize.excelbate
+  end
+  
+  def self.migrate
+    require 'active_record'
+    require 'migration_helpers/init'
+    
+    files = Dir["%s/*.yml" % @@config['output']['yaml_path']]
+    
+    Databasion::Migitize.migrabate(files, @@config)
+    
+    Dir[@@config['output']['migrations']['path'] + "/*.rb"].each { |migration| load migration }
+    Dir[@@config['output']['migrations']['models'] + "/*.rb"].each { |model| load model }
   end
   
   autoload :Googlize, APP_PATH + '/databasion/googlize.rb'

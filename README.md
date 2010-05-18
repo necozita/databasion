@@ -98,7 +98,8 @@ __0.0.1__
 * <del>Spit out ActiveRecord Models for migrations.</del>
 * Create Ruby migration script.
 * Add ability to read and update existing data.
-* Build Rakefile usage suite.
+* <del>Build a command line tool.</del>
+* Add logging.
 
 ## Testing
 Currently Databasion uses the cucumber test suite.  Any patches or pull requests must have a corresponding Feature, and all tests must pass.

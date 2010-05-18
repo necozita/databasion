@@ -5,4 +5,9 @@ namespace :databasion do
   task :google do
     Databasion.databate('google', 'config/google.yml')
   end
+  
+  desc "Run Ruby Migration scripts"
+  task :migrate do
+    Databasion.databate('migrate', 'config/google.yml')
+  end
 end
