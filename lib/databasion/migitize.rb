@@ -29,10 +29,26 @@ module Databasion
     end
     
     def self.migration_class(meta)
-      migration = "class %sMigration < ActiveRecord::Migration\n" % meta['name'].camelize
+      migration = migration_connection(meta)
+      migration += "class %sMigration < ActiveRecord::Migration\n" % meta['name'].camelize
       migration += migration_up(meta)
       migration += migration_down(meta)
       migration += "end\n"
+    end
+    
+    def self.migration_connection(meta)
+      model = "def set_migrate_connection\n"
+      model += "  ActiveRecord::Base.establish_connection(\n"
+      count = 0
+      meta['connection'].each do |key, value|
+        count += 1
+        next if value.nil?
+        model += "    :" + key + " => " + '"' + value + '"' unless ['spreadsheet', 'options'].include?(key)
+        model += "," unless meta['connection'].size == count
+        model += "\n"
+      end
+      model += "  )\n"
+      model += "end\n"
     end
     
     def self.migration_up(meta)
@@ -76,8 +92,8 @@ module Databasion
     def self.ruby_model(meta)
       model = "class %s < ActiveRecord::Base\n" % ruby_model_name(meta)
       model += ruby_model_table_name(meta)
-      model += ruby_model_connection(meta)
       model += "end\n"
+      model += ruby_model_connection(meta)
     end
     
     def self.ruby_model_name(meta)
@@ -90,21 +106,21 @@ module Databasion
     end
     
     def self.ruby_model_connection(meta)
-      model = "  ActiveRecord::Base.establish_connection(\n"
+      model = "%s.establish_connection(\n" % ruby_model_name(meta)
       count = 0
       meta['connection'].each do |key, value|
         count += 1
         next if value.nil?
-        model += "    :" + key + " => " + '"' + value + '"' unless ['spreadsheet', 'options'].include?(key)
+        model += "  :" + key + " => " + '"' + value + '"' unless ['spreadsheet', 'options'].include?(key)
         model += "," unless meta['connection'].size == count
         model += "\n"
       end
-      model += "  )\n"
+      model += ")\n"
     end
     
     def self.write_yaml(migration, file_name)
       check_output_path(@@config['output']['migrations']['path'])
-      f = File.new("%s/%s_%s.rb" % [@@config['output']['migrations']['path'], @@migration_start, file_name], 'w')
+      f = File.new("%s/%s_%s_migration.rb" % [@@config['output']['migrations']['path'], @@migration_start, file_name], 'w')
       f.write(migration)
       f.close
       @@migration_start += 1

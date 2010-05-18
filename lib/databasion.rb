@@ -37,12 +37,19 @@ module Databasion
     require 'active_record'
     require 'migration_helpers/init'
     
+    logger = Logger.new $stderr
+    logger.level = Logger::INFO
+    ActiveRecord::Base.logger = logger
+    
     files = Dir["%s/*.yml" % @@config['output']['yaml_path']]
-    
     Databasion::Migitize.migrabate(files, @@config)
-    
-    Dir[@@config['output']['migrations']['path'] + "/*.rb"].each { |migration| load migration }
-    Dir[@@config['output']['migrations']['models'] + "/*.rb"].each { |model| load model }
+
+    Dir[@@config['output']['migrations']['path'] + "/*.rb"].each do |file|
+      require file
+      set_migrate_connection
+      ActiveRecord::Migration.verbose = ENV["VERBOSE"] ? ENV["VERBOSE"] == "true" : true
+      ActiveRecord::Migrator.migrate(@@config['output']['migrations']['path'], ENV["VERSION"] ? ENV["VERSION"].to_i : nil)
+    end
   end
   
   autoload :Googlize, APP_PATH + '/databasion/googlize.rb'
