@@ -45,7 +45,10 @@ module Databasion
     def self.googlebate
       config?
       login
+      
+      Databasion::LOGGER.info "Googlizing..."
       process
+      Databasion::LOGGER.info "Googlized!"
     end
     
     private

@@ -52,33 +52,33 @@ module Databasion
     def self.create_project(opts)
       dir = Dir.pwd
       if File.exist?(dir + "/" + opts[:create])
-        $stdout.puts "A directory with the name %s already exists" % opts[:create]
+        Databasion::LOGGER.info "A directory with the name %s already exists" % opts[:create]
       else
-        $stdout.puts "Creating new project directory..."
+        Databasion::LOGGER.info "Creating new project directory..."
         create_base(dir, opts[:create])
         create_config(dir, opts[:create])
         copy_config(dir, opts[:create])
-        $stdout.puts "Done."
+        Databasion::LOGGER.info "Done."
       end
     end
     
     def self.create_base(dir, name)
       path = dir + "/" + name
       FileUtils.mkdir path
-      $stdout.puts "created: %s" % path
+      Databasion::LOGGER.info "created: %s" % path
     end
     
     def self.create_config(dir, name)
       path = dir + "/" + "%s/config" % name
       FileUtils.mkdir path
-      $stdout.puts "created: %s" % path
+      Databasion::LOGGER.info "created: %s" % path
     end
     
     def self.copy_config(dir, name)
       base = File.dirname(File.expand_path(__FILE__)) + "/../../" + "config/example.google.yml"
       path = dir + "/" + "%s/config/google.yml" % name
       FileUtils.cp base, path
-      $stdout.puts "copied: %s" % path
+      Databasion::LOGGER.info "copied: %s" % path
     end
     
   end

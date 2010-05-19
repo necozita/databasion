@@ -1,16 +1,22 @@
 require 'rubygems'
+require 'logger'
+require 'active_record'
 
 APP_PATH = File.dirname(File.expand_path(__FILE__))
 $: << APP_PATH
 Dir["#{APP_PATH}/**/lib"].each { |p| $: << p }
 
 module Databasion
+  
+  LOGGER = Logger.new $stderr
 
   class DatabasionError < StandardError; end
   
   @@config = nil
   
   def self.databate(system, config=nil)
+    LOGGER.level = Logger::INFO
+    
     raise DatabasionError, 'Databasion requires a YAML config file path.' if config.nil?
     @@config = YAML.load(File.open(config))
     
@@ -36,26 +42,27 @@ module Databasion
   end
   
   def self.migrate
-    require 'active_record'
     require 'migration_helpers/init'
-    
-    set_logger
     
     files = Dir["%s/*.yml" % @@config['output']['yaml_path']]
     Databasion::Migitize.migrabate(files, @@config)
+    
+    Databasion::LOGGER.info "Migrating..."
+    
+    set_ar_logger
 
-    files.each do |file|
-      file_data = YAML.load_file(file)
-      config = YAML.load_file('config/database.yml')[file_data['meta']['connection']['dbname']]
-      ActiveRecord::Base.establish_connection(config)
-      path = @@config['output']['migrations']['path'] + "/" + file_data['meta']['connection']['dbname']
+    YAML.load_file('config/database.yml').each do |config|
+      ActiveRecord::Base.establish_connection(config[1])
+      path = @@config['output']['migrations']['path'] + "/" + config[0]
       ActiveRecord::Migration.verbose = ENV["VERBOSE"] ? ENV["VERBOSE"] == "true" : true
       ActiveRecord::Migrator.migrate(path, ENV["VERSION"] ? ENV["VERSION"].to_i : nil)
     end
   end
   
   def self.load_yaml
-    set_logger
+    Databasion::LOGGER.info "Updating from YAML..."
+    
+    set_ar_logger
     
     models = Dir[@@config['output']['migrations']['models'] + "/*.rb"].each { |file| load file }
     
@@ -63,6 +70,8 @@ module Databasion
       f = model.split('/')
       plural_name = f[f.size-1].split(".")[0].pluralize
       camel_name  = f[f.size-1].split(".")[0].camelize
+      
+      Databasion::LOGGER.info "Loading %s into database..." % camel_name
 
       yaml_file = YAML.load_file('%s/%s.yml' % [@@config['output']['yaml_path'], plural_name])
       
@@ -80,10 +89,8 @@ module Databasion
   end
   
   private
-  def self.set_logger
-    logger = Logger.new $stderr
-    logger.level = Logger::INFO
-    ActiveRecord::Base.logger = logger
+  def self.set_ar_logger
+    ActiveRecord::Base.logger = Databasion::LOGGER
   end
   
   autoload :Applcize, APP_PATH + '/databasion/applcize.rb'

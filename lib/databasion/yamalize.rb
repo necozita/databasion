@@ -7,6 +7,8 @@ module Databasion
     def self.yamlbate(data_hash, output_path=nil)
       raise YamalizeError, 'Databasion::Yamalize requires an output path.' if output_path.nil?
       @@output_path = output_path
+      
+      Databasion::LOGGER.info "Yamlbating %s..." % data_hash['name']
 
       yaml_output = process(data_hash)
       write(data_hash['name'], yaml_output)

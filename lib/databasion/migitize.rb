@@ -12,8 +12,11 @@ module Databasion
       raise MigitizeError, 'Databasion::Migitize requires an array list of files.  Try Yamalizing first.' if file_list.empty?
       raise MigitizeError, 'Databasion::Migitize requires a parsed YAML config.' if config.nil?
       @@config = config
+      
+      Databasion::LOGGER.info "Migrabating..."
       configure_start
       parse(file_list)
+      Databasion::LOGGER.info "Migrabated!"
     end
     
     private
@@ -35,6 +38,7 @@ module Databasion
     def self.process(meta)
       write_migration(migration_class(meta), meta['name'], meta['connection']['dbname'])
       write_ruby(ruby_model(meta), meta['name'])
+      Databasion::LOGGER.info "Migrabated %s..." % meta['name']
     end
     
     def self.migration_class(meta)
