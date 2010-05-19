@@ -14,8 +14,7 @@ Given /a complete set of YAML definitions/ do
   }
   Databasion::Yamalize.yamlbate(@parse_data, @config['output']['yaml_path'])
 
-  #@files = Dir["%s/%s.yml" % [@config['output']['yaml_path'], @parse_data['name']]]
-  @files = Dir["%s/*.yml" % @config['output']['yaml_path']]
+  @files = Dir["%s/%s.yml" % [@config['output']['yaml_path'], @parse_data['name']]]
 end
 
 When /the YAML files are parsed/ do
