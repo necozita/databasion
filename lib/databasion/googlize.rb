@@ -115,12 +115,12 @@ module Databasion
           end
         when "ignore"
           row.each_with_index do |ignore, i|
-            ignore_cols.push i unless ignore.empty?
+            ignore_cols.push i-1 unless ignore.empty? or i == 0
           end
-        when "comment", !row[0].empty?
-          nil # ignore
         else
-          data.push row[1..row.size] unless (row.reject { |s| s.strip.empty? }).size == 0
+          if row[0].empty?
+            data.push row[1..row.size] unless (row.reject { |s| s.strip.empty? }).size == 0
+          end
         end
       end
 

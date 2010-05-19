@@ -131,6 +131,10 @@ module Databasion
         f.write(migration)
         f.close
         @@migration_start += 1
+      else
+        f = File.open(find_migration_file(file_name), 'w')
+        f.write(migration)
+        f.close
       end
     end
     
@@ -142,10 +146,15 @@ module Databasion
     end
     
     def self.migration_exists?(file_name)
-      files = Dir[@@config['output']['migrations']['path'] + "/**/*.rb"].collect { |file| file.split("/").pop }
+      return true if find_migration_file(file_name)
+      false
+    end
+    
+    def self.find_migration_file(file_name)
+      files = Dir[@@config['output']['migrations']['path'] + "/**/*.rb"]
       files.each do |file|
-        chunks = file.split(".")[0].split("_")
-        return true if chunks[1..chunks.size-2].join("_") == file_name
+        chunks = file.split("/").pop.split(".")[0].split("_")
+        return file if chunks[1..chunks.size-2].join("_") == file_name
       end
       false
     end

@@ -21,6 +21,7 @@ module Databasion
       excelize
     when "migrate"
       migrate
+    when "update"
       load_yaml
     end
   end

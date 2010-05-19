@@ -15,13 +15,15 @@ module Databasion
         EOS
         opt :create, "Create a base deploy directory", :type => String
         opt :config, "Path to YAML config.  Looks for config/google.yml by default", :type => String
-        opt :system, "google, excel, migrate", :type => String
+        opt :system, "google, excel, migrate, update", :type => String
         opt :migrate, "Migrate after Googlizing or Excelizing"
+        opt :update, "Load parsed YAML into migrated database"
       end
       if opts[:config].nil? and opts[:create].nil?
-        config = "/config/google.yml"
-        if File.exist?(Dir.pwd + config)
-          opts[:create] = config
+        config = "config/google.yml"
+        puts Dir.pwd
+        if File.exist?(Dir.pwd + "/" + config)
+          opts[:config] = config
         else  
           Trollop::die :config, "A YAML config must be specified"
         end
@@ -40,6 +42,9 @@ module Databasion
         Databasion.databate(opts[:system], opts[:config])
         if opts[:migrate] and opts[:system] != 'migrate'
           Databasion.databate('migrate', opts[:config])
+        end
+        if opts[:update] and opts[:system] != 'update'
+          Databasion.databate('update', opts[:config])
         end
       end
     end
