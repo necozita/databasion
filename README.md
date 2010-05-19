@@ -4,7 +4,9 @@
 
 If we were all part of a hive mind, we wouldn't need management anything.  Databases would get built, the correct columns would get used, programmers would align their ORMs, and keeping it all together wouldn't be some kind of management nightmare.
 
-Fortunately we aren't a hive mind (and if we were I would be just as confused as I am any other day, our office's main language is Japanese).  Still, even though my coworkers can't read my mind, we've come up with a tool that allows top end planners to describe system data in a spreadsheet, programmers to fudge in the column types, sizes, and database relationships, and everyone to export it out into YAML and Ruby migration scripts which update your infrastructure.  Ideally the fully automated suite is used in your test environment so your planner can quickly test changes, and a step by step process used if you are updating production machines.
+Fortunately we aren't a hive mind*.  Still, even though my coworkers can't read my mind, we've come up with a tool that allows top end planners to describe system data in a spreadsheet, programmers to fudge in the column types, sizes, and database relationships, and everyone to export it out into YAML and Ruby migration scripts which update your infrastructure.  Ideally the fully automated suite is used in your test environment so your planner can quickly test changes, and a step by step process used if you are updating production machines.
+
+* If we were I would be just as confused as I am any other day, our office's main language is Japanese.  Although I've been studying it for 9 years...
 
 ## Requirements
 
@@ -98,14 +100,17 @@ Edit _config/google.yml_.  Then run the scripts.
 
     databasion --system google
     databasion --migrate
+    databasion --update
     
 Or run them both in order.
 
-    databasion --system google --migrate
+    databasion --system google --migrate --update
     
 You can supply a different config path as well.
 
-    databasion -s google -m --config config/my.other.config.yml
+    databasion -s google -m -u --config config/my.other.config.yml
+    
+Someone administrating a production database with this tool would definitely want to run each script sequentially by hand.
     
 ### YAML Configuration
 
