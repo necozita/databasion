@@ -33,7 +33,7 @@ module Databasion
     end
     
     def self.process(meta)
-      write_migration(migration_class(meta), meta['name'])
+      write_migration(migration_class(meta), meta['name'], meta['connection']['dbname'])
       write_ruby(ruby_model(meta), meta['name'])
     end
     
@@ -112,10 +112,11 @@ module Databasion
       model += ")\n"
     end
     
-    def self.write_migration(migration, file_name)
-      check_output_path(@@config['output']['migrations']['path'])
+    def self.write_migration(migration, file_name, sub_path)
+      path = @@config['output']['migrations']['path'] + "/" + sub_path
+      check_output_path(path)
       unless migration_exists?(file_name)
-        f = File.new("%s/%s_%s_migration.rb" % [@@config['output']['migrations']['path'], @@migration_start, file_name], 'w')
+        f = File.new("%s/%s_%s_migration.rb" % [path, @@migration_start, file_name], 'w')
         f.write(migration)
         f.close
         @@migration_start += 1
@@ -134,17 +135,14 @@ module Databasion
     end
     
     def self.write_database_yaml(database_configs)
-      output = database_configs.uniq.compact.collect do |config|
+      output = {}
+      database_configs.uniq.compact.collect do |config|
         dbname = config['dbname']
         config.delete('dbname')
-        {dbname => config}
-      end
-      yaml = ''
-      output.each do |entry|
-        yaml += YAML.dump(entry)
+        output[dbname] = config
       end
       f = File.open("config/database.yml", 'w')
-      f.write(yaml)
+      f.write(YAML.dump(output))
       f.close
     end
     
