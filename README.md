@@ -84,23 +84,23 @@ If something besides a keyword is written in column0, that row is ignored and wi
 
 ### Rows
 
-Row0 is another reserved space.  If any text is written in a column (with the exception of column0), that column will be ignored.  This is useful for editing out columns that one doesn't currently want in the database.  Feature branches get bonus points.
+Row0 is another reserved space.  If any text is written in a column (with the exception of column0), that column will be ignored.  This is useful for editing out columns that one doesn't currently want in the database.
 
 ## Usage
     
 Setup the project space.    
     
-    databasion -c project
+    databasion --create project
     cd project
 
 Edit _config/google.yml_.  Then run the scripts.
 
-    databasion -s google
-    databasion -m
+    databasion --system google
+    databasion -migrate
     
 Or run them both in order.
 
-    databasion -s google -m
+    databasion ---system google --migrate
     
 You can supply a different config path as well.
 
@@ -133,7 +133,7 @@ __0.0.1__
 
 ## Testing
 
-Currently Databasion uses the cucumber test suite.  Any patches or pull requests must have a corresponding Feature, and all tests must pass.
+Currently Databasion uses the cucumber test suite.  Any patches or pull requests must have a corresponding Feature, and all tests must pass.  Feature branches get bonus points.
 
 ## Author
 
