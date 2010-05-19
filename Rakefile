@@ -20,4 +20,4 @@ Jeweler::GemcutterTasks.new
 
 Dir['lib/tasks/**/*.rake'].each { |rake| load rake }
 
-task :default  => [:databasion, :test]
+task :default  => :test

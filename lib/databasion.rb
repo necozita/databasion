@@ -83,6 +83,7 @@ module Databasion
     ActiveRecord::Base.logger = logger
   end
   
+  autoload :Applcize, APP_PATH + '/databasion/applcize.rb'
   autoload :Googlize, APP_PATH + '/databasion/googlize.rb'
   autoload :Yamalize, APP_PATH + '/databasion/yamalize.rb'
   autoload :Excelize, APP_PATH + '/databasion/excelize.rb'

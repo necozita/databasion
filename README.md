@@ -9,26 +9,35 @@ Fortunately we aren't a hive mind (and if we were I would be just as confused as
 ## Requirements
 
 ### Ruby
+
 * Ruby >= 1.8.7
 
 ### Gems  
+
 * ActiveRecord >= 2.3.5
 * ActiveSupport >= 2.3.5
 * Google Spreadsheet >= 0.1.1
 * Spreadsheet >= 0.6.4.1
+
+## Installation
+
+### Install
+
+    sudo gem install databasion
     
 ## Spreadsheet Conventions
 
 None of this would really work if there weren't some conventions in place.  The following explains how the worksheet needs to be formatted, how the data spreadsheets themselves needs to be formatted, what fields are required, and what fields can be ignored.
 
-At the highest level there needs to be a worksheet named __Database__.  This is simply a master list of related spreadsheets, and what database they correspond to (for split table designs).  The column names are required.
+At the highest level there needs to be a worksheet named _Database_.  This is simply a master list of related spreadsheets, and what database they correspond to (for split table designs).  The column names are required.
 
 ### Database
+
 | spreadsheet | database| username| password| adapter| host     | port| options
 |:------------|:--------|:--------|:--------|:-------|:---------|:----|:-------
 | superheroes | db1     | dbuser  | dbuser  | mysql  | 127.0.0.1|     |        
 
-The options column currently support's __force__, which tells the database to drop and recreate the table.
+The options column currently support's _force_, which tells the database to drop and recreate the table.
 
 Next we define the actual table spreadsheets.
 
@@ -68,23 +77,42 @@ __Ruby Migration Types__
 * timestamp
 
 ### Columns
+
 Currently column0 is reserved for keywords and comments.
 
 If something besides a keyword is written in column0, that row is ignored and will not be used.  This is useful if you need to edit out some data.
 
 ### Rows
+
 Row0 is another reserved space.  If any text is written in a column (with the exception of column0), that column will be ignored.  This is useful for editing out columns that one doesn't currently want in the database.  Feature branches get bonus points.
 
-## YAML Configuration
+## Usage
+    
+Setup the project space.    
+    
+    databasion -c project
+    cd project
 
-### Google
-First copy example.google.yml to google.yml, and then edit it's values.
+Edit _config/google.yml_.  Then run the scripts.
 
-__login__: A valid Google username and password.
+    databasion -s google
+    databasion -m
+    
+Or run them both in order.
 
-__sheets__: A list of the keys gleaned from the Google Docs URL, and a human readable name.
+    databasion -s google -m
+    
+You can supply a different config path as well.
 
-__output__: Where to output the relevant data.
+    databasion -s google -m --config config/my.other.config.yml
+    
+### YAML Configuration
+
+#### Google
+
+* _login_: A valid Google username and password.
+* _sheets_: A list of the keys gleaned from the Google Docs URL, and a human readable name.
+* _output_: Where to output the relevant data.
 
 ## Roadmap
 
@@ -104,6 +132,7 @@ __0.0.1__
 * Add logging.
 
 ## Testing
+
 Currently Databasion uses the cucumber test suite.  Any patches or pull requests must have a corresponding Feature, and all tests must pass.
 
 ## Author
