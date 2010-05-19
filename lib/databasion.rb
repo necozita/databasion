@@ -43,10 +43,13 @@ module Databasion
     
     files = Dir["%s/*.yml" % @@config['output']['yaml_path']]
     Databasion::Migitize.migrabate(files, @@config)
-
-    Dir[@@config['output']['migrations']['path'] + "/*.rb"].each do |file|
-      require file
-      set_migrate_connection
+    
+    Dir[@@config['output']['migrations']['path'] + "/*.rb"].each { |file| load file }
+    
+    files.each do |file|
+      file_data = YAML.load_file(file)
+      config = YAML.load_file('config/database.yml')[file_data['meta']['connection']['dbname']]
+      ActiveRecord::Base.establish_connection(config)
       ActiveRecord::Migration.verbose = ENV["VERBOSE"] ? ENV["VERBOSE"] == "true" : true
       ActiveRecord::Migrator.migrate(@@config['output']['migrations']['path'], ENV["VERSION"] ? ENV["VERSION"].to_i : nil)
     end

@@ -38,27 +38,10 @@ module Databasion
     end
     
     def self.migration_class(meta)
-      migration = migration_connection(meta)
-      migration += "class %sMigration < ActiveRecord::Migration\n" % meta['name'].camelize
+      migration = "class %sMigration < ActiveRecord::Migration\n" % meta['name'].camelize
       migration += migration_up(meta)
       migration += migration_down(meta)
       migration += "end\n"
-    end
-    
-    def self.migration_connection(meta)
-      model = "def set_migrate_connection\n"
-      model += "  ActiveRecord::Base.establish_connection(\n"
-      count = 0
-      meta['connection'].each do |key, value|
-        count += 1
-        next if value.nil?
-        next if ['spreadsheet', 'options', 'dbname'].include?(key)
-        model += "    :" + key + " => " + '"' + value + '"'
-        model += "," unless meta['connection'].size == count
-        model += "\n"
-      end
-      model += "  )\n"
-      model += "end\n"
     end
     
     def self.migration_up(meta)
