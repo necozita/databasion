@@ -12,10 +12,16 @@ module Databasion
       raise MigitizeError, 'Databasion::Migitize requires an array list of files.  Try Yamalizing first.' if file_list.empty?
       raise MigitizeError, 'Databasion::Migitize requires a parsed YAML config.' if config.nil?
       @@config = config
+      configure_start
       parse(file_list)
     end
     
     private
+    def self.configure_start
+      files = Dir[@@config['output']['migrations']['path'] + "/**/*.rb"].collect { |file| file.split("/").pop }.sort
+      @@migration_start = files[files.size-1].split("_")[0].to_i if files.size > 0
+    end
+    
     def self.parse(file_list)
       file_list.each do |file|
         meta = YAML.load(File.open(file))['meta']
@@ -24,7 +30,7 @@ module Databasion
     end
     
     def self.process(meta)
-      write_yaml(migration_class(meta), meta['name'])
+      write_migration(migration_class(meta), meta['name'])
       write_ruby(ruby_model(meta), meta['name'])
     end
     
@@ -118,12 +124,14 @@ module Databasion
       model += ")\n"
     end
     
-    def self.write_yaml(migration, file_name)
+    def self.write_migration(migration, file_name)
       check_output_path(@@config['output']['migrations']['path'])
-      f = File.new("%s/%s_%s_migration.rb" % [@@config['output']['migrations']['path'], @@migration_start, file_name], 'w')
-      f.write(migration)
-      f.close
-      @@migration_start += 1
+      unless migration_exists?(file_name)
+        f = File.new("%s/%s_%s_migration.rb" % [@@config['output']['migrations']['path'], @@migration_start, file_name], 'w')
+        f.write(migration)
+        f.close
+        @@migration_start += 1
+      end
     end
     
     def self.write_ruby(model, file_name)
@@ -131,6 +139,15 @@ module Databasion
       f = File.new("%s/%s.rb" % [@@config['output']['migrations']['models'], file_name], 'w')
       f.write(model)
       f.close
+    end
+    
+    def self.migration_exists?(file_name)
+      files = Dir[@@config['output']['migrations']['path'] + "/**/*.rb"].collect { |file| file.split("/").pop }
+      files.each do |file|
+        chunks = file.split(".")[0].split("_")
+        return true if chunks[1..chunks.size-2].join("_") == file_name
+      end
+      false
     end
 
     def self.check_output_path(path)

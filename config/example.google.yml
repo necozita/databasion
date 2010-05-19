@@ -10,4 +10,4 @@ output:
   yaml_path: 'data'
   migrations:
     path: 'migrations'
-    models: 'migrations/models'
+    models: 'models'
