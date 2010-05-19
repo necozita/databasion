@@ -96,11 +96,11 @@ Setup the project space.
 Edit _config/google.yml_.  Then run the scripts.
 
     databasion --system google
-    databasion -migrate
+    databasion --migrate
     
 Or run them both in order.
 
-    databasion ---system google --migrate
+    databasion --system google --migrate
     
 You can supply a different config path as well.
 
