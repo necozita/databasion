@@ -23,10 +23,13 @@ module Databasion
     end
     
     def self.parse(file_list)
+      database_configs = []
       file_list.each do |file|
         meta = YAML.load(File.open(file))['meta']
+        database_configs.push meta['connection']
         process(meta)
       end
+      write_database_yaml(database_configs)
     end
     
     def self.process(meta)
@@ -49,7 +52,8 @@ module Databasion
       meta['connection'].each do |key, value|
         count += 1
         next if value.nil?
-        model += "    :" + key + " => " + '"' + value + '"' unless ['spreadsheet', 'options'].include?(key)
+        next if ['spreadsheet', 'options', 'dbname'].include?(key)
+        model += "    :" + key + " => " + '"' + value + '"'
         model += "," unless meta['connection'].size == count
         model += "\n"
       end
@@ -76,7 +80,7 @@ module Databasion
           migration += '      t.integer :id, :options => "PRIMARY KEY"' + "\n"
         else
           migration += "      t.%s :%s" % [field['type'], field['field']]
-          migration += ", :size => %s" % field['size'] if field['size']
+          migration += ", :limit => %s" % field['size'] if field['size']
           migration += ", :default => %s" % field['default'] if field['default']
           migration += "\n"
         end
@@ -117,7 +121,8 @@ module Databasion
       meta['connection'].each do |key, value|
         count += 1
         next if value.nil?
-        model += "  :" + key + " => " + '"' + value + '"' unless ['spreadsheet', 'options'].include?(key)
+        next if ['spreadsheet', 'options', 'dbname'].include?(key)
+        model += "  :" + key + " => " + '"' + value + '"'
         model += "," unless meta['connection'].size == count
         model += "\n"
       end
@@ -142,6 +147,21 @@ module Databasion
       check_output_path(@@config['output']['migrations']['models'])
       f = File.new("%s/%s.rb" % [@@config['output']['migrations']['models'], file_name], 'w')
       f.write(model)
+      f.close
+    end
+    
+    def self.write_database_yaml(database_configs)
+      output = database_configs.uniq.compact.collect do |config|
+        dbname = config['dbname']
+        config.delete('dbname')
+        {dbname => config}
+      end
+      yaml = ''
+      output.each do |entry|
+        yaml += YAML.dump(entry)
+      end
+      f = File.open("config/database.yml", 'w')
+      f.write(yaml)
       f.close
     end
     

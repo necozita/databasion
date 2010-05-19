@@ -33,9 +33,9 @@ At the highest level there needs to be a worksheet named _Database_.  This is si
 
 ### Database
 
-| spreadsheet | database| username| password| adapter| host     | port| options
-|:------------|:--------|:--------|:--------|:-------|:---------|:----|:-------
-| superheroes | db1     | dbuser  | dbuser  | mysql  | 127.0.0.1|     |        
+| spreadsheet | dbname| database| username| password| adapter| host     | port| options
+|:------------|:------|:--------|:--------|:--------|:-------|:---------|:----|:-------
+| superheroes | db1   | db_test | dbuser  | dbuser  | mysql  | 127.0.0.1|     |        
 
 The options column currently support's _force_, which tells the database to drop and recreate the table.
 
