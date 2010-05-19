@@ -130,7 +130,7 @@ __0.0.1__
 * <del>Create Ruby migration script.</del> <del>Still needs polished.</del>
 * <del>Add ability to read and update existing data.</del>
 * <del>Build a command line tool.</del>
-* Add logging.
+* <del>Add logging.</del>
 
 ## Testing
 
