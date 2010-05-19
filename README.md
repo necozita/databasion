@@ -45,7 +45,7 @@ Next we define the actual table spreadsheets.
 
 | column0  |             |              |                    
 |:---------|:------------|:-------------|:-------------------
-|          |             |              |                    
+| ignore   |             |              |                    
 | comment  |             |              |                    
 | table    | superheroes |              |                    
 | field    | id          | name         | power              
@@ -56,6 +56,7 @@ Next we define the actual table spreadsheets.
 
 ### Keywords
 
+* ignore - Anything written in this column will cause this column and it's data to be ignored.
 * table - The name of the table, and an optional comma delimited 'false' if the table name should not be auto-pluralized.
 * field - The name of the table column.
 * type  - A comma delimited list giving the type of the column (using Ruby migration terms), optional size, and optional default value.
@@ -84,7 +85,7 @@ If something besides a keyword is written in column0, that row is ignored and wi
 
 ### Rows
 
-Row0 is another reserved space.  If any text is written in a column (with the exception of column0), that column will be ignored.  This is useful for editing out columns that one doesn't currently want in the database.
+Row0 isn't technically reserved, but should ideally be saved for use with the _ignore_ flag.  If any text is written in a column (with the exception of column0), that column will be ignored.  This is useful for editing out columns that one doesn't currently want in the database.
 
 ## Usage
     
