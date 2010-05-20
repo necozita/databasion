@@ -8,7 +8,7 @@ Jeweler::Tasks.new do |gem|
   gem.email       = "mojobojo@gmail.com"
   gem.homepage    = "http://github.com/boj/databasion"
   gem.authors     = ["Brian Jones", "Istpika"]
-  gem.version     = "0.0.3"
+  gem.version     = "0.0.4"
 
   gem.add_dependency('activerecord', '>= 2.3.5')
   gem.add_dependency('activesupport', '>= 2.3.5')

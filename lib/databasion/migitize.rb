@@ -45,7 +45,7 @@ module Databasion
     
     def self.migration_class(meta)
       template = ''
-      File.open('lib/databasion/templates/migration.erb', 'r') { |f| template = f.read }
+      File.open(File.expand_path(File.dirname(__FILE__)) + '/templates/migration.erb', 'r') { |f| template = f.read }
       class_name = meta['name'].camelize
       table_name = meta['name']
       fields = meta['fields']
@@ -61,7 +61,7 @@ module Databasion
     
     def self.ruby_model(meta)
       template = ''
-      File.open('lib/databasion/templates/model.erb', 'r') { |f| template = f.read }
+      File.open(File.expand_path(File.dirname(__FILE__)) + '/templates/model.erb', 'r') { |f| template = f.read }
       class_name = ruby_model_name(meta)
       table_name = ruby_model_table_name(meta)
       fields = meta['connection'].clone

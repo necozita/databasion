@@ -1,4 +1,5 @@
 require 'trollop'
+require 'fileutils'
 
 module Databasion
   

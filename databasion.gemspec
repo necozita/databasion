@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{databasion}
-  s.version = "0.0.3"
+  s.version = "0.0.4"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Brian Jones", "Istpika"]
@@ -43,6 +43,8 @@ Gem::Specification.new do |s|
      "lib/databasion/loadlize.rb",
      "lib/databasion/migitize.rb",
      "lib/databasion/svnilize.rb",
+     "lib/databasion/templates/migration.erb",
+     "lib/databasion/templates/model.erb",
      "lib/databasion/yamalize.rb",
      "lib/migration_helpers/MIT-LICENSE",
      "lib/migration_helpers/README.markdown",
