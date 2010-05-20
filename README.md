@@ -120,6 +120,11 @@ Someone administrating a production database with this tool would definitely wan
 * _login_: A valid Google username and password.
 * _sheets_: A list of the keys gleaned from the Google Docs URL, and a human readable name.
 * _output_: Where to output the relevant data.
+* _svn_: SVN configuration data.
+
+## SVN
+
+If the currently created databasion project is committed to SVN, running the _--svn_ switch will auto-add and commit all the project files.  This is useful for maintaining version control of the system, especially if something goes wrong and you need to do a rollback.
 
 ## Roadmap
 
