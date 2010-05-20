@@ -10,4 +10,14 @@ namespace :databasion do
   task :migrate do
     Databasion.databate('migrate', 'config/google.yml')
   end
+  
+  desc "Run the update script to stuff YAML data into database"
+  task :update do
+    Databasion.databate('update', 'config/google.yml')
+  end
+  
+  desc "Run the SVN auto-commit system"
+  task :svn do
+    Databasion.databate('svn', 'config/google.yml')
+  end
 end

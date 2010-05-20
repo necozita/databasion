@@ -15,9 +15,10 @@ module Databasion
         EOS
         opt :create, "Create a base deploy directory", :type => String
         opt :config, "Path to YAML config.  Looks for config/google.yml by default", :type => String
-        opt :system, "google, excel, migrate, update", :type => String
+        opt :google, "Googlize data from Google Spreadsheets"
         opt :migrate, "Migrate after Googlizing or Excelizing"
         opt :update, "Load parsed YAML into migrated database"
+        opt :svn, "Auto commit the project files (assuming it has been committed to SVN)"
       end
       if opts[:config].nil? and opts[:create].nil?
         config = "config/google.yml"
@@ -28,7 +29,6 @@ module Databasion
           Trollop::die :config, "A YAML config must be specified"
         end
       end
-      Trollop::die :system, "System requires a parameter" if opts[:system].nil? and opts[:create].nil?
 
       if opts[:create]
         create_project(opts)
@@ -38,14 +38,17 @@ module Databasion
     end
     
     def self.execute_databasion(opts)
-      if opts[:system] and opts[:config]
-        Databasion.databate(opts[:system], opts[:config])
-        if opts[:migrate] and opts[:system] != 'migrate'
-          Databasion.databate('migrate', opts[:config])
-        end
-        if opts[:update] and opts[:system] != 'update'
-          Databasion.databate('update', opts[:config])
-        end
+      if opts[:google]
+        Databasion.databate('google', opts[:config])
+      end
+      if opts[:migrate]
+        Databasion.databate('migrate', opts[:config])
+      end
+      if opts[:update]
+        Databasion.databate('update', opts[:config])
+      end
+      if opts[:svn]
+        Databasion.databate('svn', opts[:config])
       end
     end
     

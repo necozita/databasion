@@ -11,3 +11,7 @@ output:
   migrations:
     path: 'migrations'
     models: 'models'
+    
+svn:
+  bin: /usr/bin/svn
+  repo: svn://repo/path

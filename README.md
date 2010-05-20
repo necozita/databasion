@@ -98,17 +98,18 @@ Setup the project space.
 
 Edit _config/google.yml_.  Then run the scripts.
 
-    databasion --system google
+    databasion --google
     databasion --migrate
     databasion --update
+    databasion --svn
     
-Or run them both in order.
+Or run them all in order.
 
-    databasion --system google --migrate --update
+    databasion --google --migrate --update --svn
     
 You can supply a different config path as well.
 
-    databasion -s google -m -u --config config/my.other.config.yml
+    databasion -g -m -u -s --config config/my.other.config.yml
     
 Someone administrating a production database with this tool would definitely want to run each script sequentially by hand.
     
@@ -124,6 +125,7 @@ Someone administrating a production database with this tool would definitely wan
 
 __0.0.2__
 
+* <del>Add SVN hooks.</del>
 * Add ability to read existing tables, and make relative alter table migration scripts.
 
 __0.0.1__

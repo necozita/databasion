@@ -26,9 +26,11 @@ module Databasion
     when "excel"
       excelize
     when "migrate"
-      migrate
+      datacize
     when "update"
-      load_yaml
+      loadalize
+    when "svn"
+      svnilize
     end
   end
   
@@ -41,51 +43,19 @@ module Databasion
     Databasion::Excelize.excelbate
   end
   
-  def self.migrate
-    require 'migration_helpers/init'
-    
-    files = Dir["%s/*.yml" % @@config['output']['yaml_path']]
-    Databasion::Migitize.migrabate(files, @@config)
-    
-    Databasion::LOGGER.info "Migrating..."
-    
-    set_ar_logger
-
-    YAML.load_file('config/database.yml').each do |config|
-      ActiveRecord::Base.establish_connection(config[1])
-      path = @@config['output']['migrations']['path'] + "/" + config[0]
-      ActiveRecord::Migration.verbose = ENV["VERBOSE"] ? ENV["VERBOSE"] == "true" : true
-      ActiveRecord::Migrator.migrate(path, ENV["VERSION"] ? ENV["VERSION"].to_i : nil)
-    end
+  def datacize
+    Databasion::Datacize.config = @@config
+    Databasion::Datacize.loadalize
   end
   
-  def self.load_yaml
-    Databasion::LOGGER.info "Updating from YAML..."
-    
-    set_ar_logger
-    
-    models = Dir[@@config['output']['migrations']['models'] + "/*.rb"].each { |file| load file }
-    
-    models.each do |model|
-      f = model.split('/')
-      plural_name = f[f.size-1].split(".")[0].pluralize
-      camel_name  = f[f.size-1].split(".")[0].camelize
-      
-      Databasion::LOGGER.info "Loading %s into database..." % camel_name
-
-      yaml_file = YAML.load_file('%s/%s.yml' % [@@config['output']['yaml_path'], plural_name])
-      
-      for row in yaml_file['data']
-        klass = eval("%s.new" % camel_name)
-        model = camel_name.constantize.find(:first, :conditions => ['id = ?', row['id']])
-        if model
-          camel_name.constantize.update(model.id, row)
-        else
-          klass.id = row['id']
-          klass.update_attributes(row)
-        end
-      end
-    end
+  def loadalize
+    Databasion::Loadlize.config = @@config
+    Databasion::Loadlize.loadalize
+  end
+  
+  def self.svnilize
+    Databasion::Svnilize.config = @@config
+    Databasion::Svnilize.commit
   end
   
   private
@@ -99,5 +69,8 @@ module Databasion
   autoload :Excelize, APP_PATH + '/databasion/excelize.rb'
   autoload :Csvilize, APP_PATH + '/databasion/csvilize.rb'
   autoload :Migitize, APP_PATH + '/databasion/migitize.rb'
+  autoload :Loadlize, APP_PATH + '/databasion/loadlize.rb'
+  autoload :Datacize, APP_PATH + '/databasion/datacize.rb'
+  autoload :Svnilize, APP_PATH + '/databasion/svnilize.rb'
   
 end
