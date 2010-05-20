@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{databasion}
-  s.version = "0.0.1"
+  s.version = "0.0.2"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Brian Jones", "Istpika"]
-  s.date = %q{2010-05-19}
+  s.date = %q{2010-05-20}
   s.default_executable = %q{databasion}
   s.email = %q{mojobojo@gmail.com}
   s.executables = ["databasion"]
@@ -29,15 +29,20 @@ Gem::Specification.new do |s|
      "features/databasion/migitize.feature",
      "features/databasion/step_definitions/googlize_steps.rb",
      "features/databasion/step_definitions/migitize_steps.rb",
+     "features/databasion/step_definitions/svnilize_steps.rb",
      "features/databasion/step_definitions/yamalize_steps.rb",
+     "features/databasion/svnilize.feature",
      "features/databasion/yamalize.feature",
      "features/step_definitions/databasion_steps.rb",
      "lib/databasion.rb",
      "lib/databasion/applcize.rb",
      "lib/databasion/csvilize.rb",
+     "lib/databasion/datacize.rb",
      "lib/databasion/excelize.rb",
      "lib/databasion/googlize.rb",
+     "lib/databasion/loadlize.rb",
      "lib/databasion/migitize.rb",
+     "lib/databasion/svnilize.rb",
      "lib/databasion/yamalize.rb",
      "lib/migration_helpers/MIT-LICENSE",
      "lib/migration_helpers/README.markdown",
