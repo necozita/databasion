@@ -128,24 +128,10 @@ If the currently created databasion project is committed to SVN, running the _--
 
 ## Roadmap
 
-__0.0.3__
+__0.1.0__
 
 * Add ability to read existing tables, and make relative alter table migration scripts.
-
-__0.0.2__
-
-* <del>Add SVN hooks.</del>
-
-__0.0.1__
-
-* <del>Write this documentation.</del>
-* <del>Add table name specification.</del>
-* <del>Add database level table relationships.</del>
-* <del>Spit out ActiveRecord Models for migrations.</del>
-* <del>Create Ruby migration script.</del> <del>Still needs polished.</del>
-* <del>Add ability to read and update existing data.</del>
-* <del>Build a command line tool.</del>
-* <del>Add logging.</del>
+* Convert Yamalize and Migratize code to templates instead of inline.
 
 ## Testing
 
