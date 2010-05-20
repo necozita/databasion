@@ -1,0 +1,11 @@
+class <%= class_name %> < ActiveRecord::Base
+  <%= 'set_table_name %s' % table_name unless table_name.nil? %><%= "\n" %>
+end
+<%= class_name %>.establish_connection(
+  <% count = 0 %>
+  <% for key, value in fields %>
+  <% count += 1 %>
+  <% next if value.nil? %>
+  :<%= key %> => "<%= value %>"<%= ',' unless count == fields.size %><%= "\n" %>
+  <% end %>
+)

@@ -1,3 +1,5 @@
+require 'fileutils'
+
 module Databasion
   
   class YamalizeError < StandardError; end

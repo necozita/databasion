@@ -34,6 +34,7 @@ module Databasion
     end
   end
   
+  private
   def self.googlize
     Databasion::Googlize.config = @@config
     Databasion::Googlize.googlebate
@@ -43,12 +44,12 @@ module Databasion
     Databasion::Excelize.excelbate
   end
   
-  def datacize
+  def self.datacize
     Databasion::Datacize.config = @@config
-    Databasion::Datacize.loadalize
+    Databasion::Datacize.datacize
   end
   
-  def loadalize
+  def self.loadalize
     Databasion::Loadlize.config = @@config
     Databasion::Loadlize.loadalize
   end
@@ -57,8 +58,7 @@ module Databasion
     Databasion::Svnilize.config = @@config
     Databasion::Svnilize.commit
   end
-  
-  private
+
   def self.set_ar_logger
     ActiveRecord::Base.logger = Databasion::LOGGER
   end

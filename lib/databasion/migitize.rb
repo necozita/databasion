@@ -1,4 +1,6 @@
 require 'active_support'
+require 'erb'
+require 'fileutils'
 
 module Databasion
   
@@ -42,43 +44,14 @@ module Databasion
     end
     
     def self.migration_class(meta)
-      migration = "class %sMigration < ActiveRecord::Migration\n" % meta['name'].camelize
-      migration += migration_up(meta)
-      migration += migration_down(meta)
-      migration += "end\n"
-    end
-    
-    def self.migration_up(meta)
-      migration = "  def self.up\n"
-      if meta['fields'].collect {|f| f['field']}.include?('id')
-        migration += "    create_table :%s, :id => false do |t|\n" % set_table_name(meta)
-      else
-        migration += "    create_table :%s do |t|\n" % set_table_name(meta)
-      end
-      migration += migration_up_fields(meta)
-      migration += "    end\n"
-      migration += "  end\n"
-    end
-    
-    def self.migration_up_fields(meta)
-      migration = ''
-      meta['fields'].each do |field|
-        if field['field'] == 'id'
-          migration += '      t.integer :id, :options => "PRIMARY KEY"' + "\n"
-        else
-          migration += "      t.%s :%s" % [field['type'], field['field']]
-          migration += ", :limit => %s" % field['size'] if field['size']
-          migration += ", :default => %s" % field['default'] if field['default']
-          migration += "\n"
-        end
-      end
-      migration
-    end
-    
-    def self.migration_down(meta)
-      migration = "  def self.down\n"
-      migration += "    drop_table :%s\n" % meta['name'].pluralize
-      migration += "  end\n"
+      template = ''
+      File.open('lib/databasion/templates/migration.erb', 'r') { |f| template = f.read }
+      class_name = meta['name'].camelize
+      table_name = meta['name']
+      fields = meta['fields']
+
+      migration = ERB.new(template, nil, ">")
+      migration.result(binding)
     end
     
     def self.set_table_name(meta)
@@ -87,10 +60,17 @@ module Databasion
     end
     
     def self.ruby_model(meta)
-      model = "class %s < ActiveRecord::Base\n" % ruby_model_name(meta)
-      model += ruby_model_table_name(meta)
-      model += "end\n"
-      model += ruby_model_connection(meta)
+      template = ''
+      File.open('lib/databasion/templates/model.erb', 'r') { |f| template = f.read }
+      class_name = ruby_model_name(meta)
+      table_name = ruby_model_table_name(meta)
+      fields = meta['connection'].clone
+      fields.delete('spreadsheet')
+      fields.delete('options')
+      fields.delete('dbname')
+
+      model = ERB.new(template, nil, ">")
+      model.result(binding)
     end
     
     def self.ruby_model_name(meta)
@@ -98,25 +78,12 @@ module Databasion
     end
     
     def self.ruby_model_table_name(meta)
-      return "set_table_name %s\n" % meta['name'] unless meta['plural']
-      ''
-    end
-    
-    def self.ruby_model_connection(meta)
-      model = "%s.establish_connection(\n" % ruby_model_name(meta)
-      count = 0
-      meta['connection'].each do |key, value|
-        count += 1
-        next if value.nil?
-        next if ['spreadsheet', 'options', 'dbname'].include?(key)
-        model += "  :" + key + " => " + '"' + value + '"'
-        model += "," unless meta['connection'].size == count
-        model += "\n"
-      end
-      model += ")\n"
+      return meta['name'] unless meta['plural']
+      nil
     end
     
     def self.write_migration(migration, file_name, sub_path)
+      puts sub_path
       path = @@config['output']['migrations']['path'] + "/" + sub_path
       check_output_path(path)
       unless migration_exists?(file_name)
