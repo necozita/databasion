@@ -123,10 +123,13 @@ Someone administrating a production database with this tool would definitely wan
 
 ## Roadmap
 
+__0.0.3__
+
+* Add ability to read existing tables, and make relative alter table migration scripts.
+
 __0.0.2__
 
 * <del>Add SVN hooks.</del>
-* Add ability to read existing tables, and make relative alter table migration scripts.
 
 __0.0.1__
 
