@@ -20,12 +20,17 @@ module Databasion
 
       models.each do |model|
         f = model.split('/')
-        plural_name = f[f.size-1].split(".")[0].pluralize
-        camel_name  = f[f.size-1].split(".")[0].camelize
+        normal_name = f[f.size-1].split(".")[0]
+        plural_name = normal_name.pluralize
+        camel_name  = normal_name.camelize
 
         Databasion::LOGGER.info "Loading %s into database..." % camel_name
 
-        yaml_file = YAML.load_file('%s/%s.yml' % [@@config['output']['yaml_path'], plural_name])
+        begin
+          yaml_file = YAML.load_file('%s/%s.yml' % [@@config['output']['yaml_path'], plural_name])
+        rescue
+          yaml_file = YAML.load_file('%s/%s.yml' % [@@config['output']['yaml_path'], normal_name])
+        end
 
         for row in yaml_file['data']
           klass = eval("%s.new" % camel_name)
@@ -36,7 +41,7 @@ module Databasion
             klass.id = row['id']
             klass.update_attributes(row)
           end
-        end
+        end if yaml_file['data']
       end
     end
     
