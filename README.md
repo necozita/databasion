@@ -131,7 +131,6 @@ If the currently created databasion project is committed to SVN, running the _--
 __0.1.0__
 
 * Add ability to read existing tables, and make relative alter table migration scripts.
-* Convert Yamalize and Migratize code to templates instead of inline.
 
 ## Testing
 

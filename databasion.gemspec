@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Brian Jones", "Istpika"]
-  s.date = %q{2010-05-21}
+  s.date = %q{2010-05-24}
   s.default_executable = %q{databasion}
   s.email = %q{mojobojo@gmail.com}
   s.executables = ["databasion"]
@@ -39,6 +39,7 @@ Gem::Specification.new do |s|
      "lib/databasion/csvilize.rb",
      "lib/databasion/datacize.rb",
      "lib/databasion/excelize.rb",
+     "lib/databasion/gititlize.rb",
      "lib/databasion/googlize.rb",
      "lib/databasion/loadlize.rb",
      "lib/databasion/migitize.rb",

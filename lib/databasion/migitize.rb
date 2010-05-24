@@ -16,15 +16,15 @@ module Databasion
       @@config = config
       
       Databasion::LOGGER.info "Migrabating..."
-      configure_start
       parse(file_list)
       Databasion::LOGGER.info "Migrabated!"
     end
     
     private
-    def self.configure_start
-      files = Dir[@@config['output']['migrations']['path'] + "/**/*.rb"].collect { |file| file.split("/").pop }.sort
-      @@migration_start = files[files.size-1].split("_")[0].to_i if files.size > 0
+    def self.configure_start(dbname)
+      @@migration_start = 100
+      files = Dir[@@config['output']['migrations']['path'] + "/%s/*.rb" % dbname].collect { |file| file.split("/").pop }.sort
+      @@migration_start = files[files.size-1].split("_")[0].to_i + 1 if files.size > 0
     end
     
     def self.parse(file_list)
@@ -38,6 +38,7 @@ module Databasion
     end
     
     def self.process(meta)
+      configure_start(meta['connection']['dbname'])
       write_migration(migration_class(meta), meta['name'], meta['connection']['dbname'])
       write_ruby(ruby_model(meta), meta['name'])
       Databasion::LOGGER.info "Migrabated %s..." % meta['name']
@@ -83,7 +84,6 @@ module Databasion
     end
     
     def self.write_migration(migration, file_name, sub_path)
-      puts sub_path
       path = @@config['output']['migrations']['path'] + "/" + sub_path
       check_output_path(path)
       unless migration_exists?(file_name)

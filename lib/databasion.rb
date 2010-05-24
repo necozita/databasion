@@ -72,5 +72,6 @@ module Databasion
   autoload :Loadlize, APP_PATH + '/databasion/loadlize.rb'
   autoload :Datacize, APP_PATH + '/databasion/datacize.rb'
   autoload :Svnilize, APP_PATH + '/databasion/svnilize.rb'
+  autoload :Gitilize, APP_PATH + '/databasion/gitilize.rb'
   
 end
