@@ -2,7 +2,7 @@ class <%= class_name %>Migration < ActiveRecord::Migration
   def self.up
     create_table :<%= table_name %><%= ', :id => false' if fields.collect {|f| f['field']}.include?('id') %> do |t|
     <% for field in fields %>
-      t.<%= field['type'] %> :<%= field['field'] %><%= ', :limit => %s' % field['size'] if field['size'] %><%= ', :default => %s' % field['default'] if field['default'] %><%= "\n" %>
+      t.<%= field['type'] %> :<%= field['field'] %><%= ', :limit => %s' % field['size'] if field['size'] %><%= ', :default => %s' % field['default'] if field['default'] %><%= ', :options => "PRIMARY KEY"' if field['field'] == 'id' %><%= "\n" %>
     <% end %>
     end
   end
