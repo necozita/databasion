@@ -31,6 +31,11 @@ module Databasion
         yaml_output += "      size: %s\n" % type_data[1] if type_data[1]
         yaml_output += "      default: %s\n" % type_data[2] if type_data[2]
       end
+      indexes = ''
+      data_hash['indexes'].each_with_index do |index, i|
+        indexes += data_hash['fields'][i] + ","
+      end
+      yaml_output += "  indexes: [%s]\n" % indexes.chop
       yaml_output += "  connection:\n"
       data_hash['connection'].each do |key, value|
         yaml_output += "    %s: %s\n" % [key, value] unless ['spreadsheet', 'options'].include?(key)

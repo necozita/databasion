@@ -50,6 +50,7 @@ Next we define the actual table spreadsheets.
 | ignore   |             |              |                    
 | comment  |             |              |                    
 | table    | superheroes |              |                    
+| index    | yes         |              |
 | field    | id          | name         | power              
 | type     | integer     | string, 20   | string, 20, Wimp   
 |          | 1           | Brian Jones  | Ruby Hacker        
@@ -60,6 +61,7 @@ Next we define the actual table spreadsheets.
 
 * ignore - Anything written in this column will cause this column and it's data to be ignored.
 * table - The name of the table, and an optional comma delimited 'false' if the table name should not be auto-pluralized.
+* index - If something is written in a columns field here, it will get flagged as an index and created via add_index(table, [fields]).
 * field - The name of the table column.
 * type  - A comma delimited list giving the type of the column (using Ruby migration terms), optional size, and optional default value.
 

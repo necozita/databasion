@@ -93,6 +93,7 @@ module Databasion
       plural  = true
       fields  = []
       types   = []
+      indexes = []
       data    = []
 
       ignore_cols = []
@@ -116,6 +117,10 @@ module Databasion
           row.each do |type|
             types.push type unless type.empty?
           end
+        when "index"
+          row.each_with_index do |index, i|
+            indexes.push i-1 unless index.empty? or i == 0
+          end
         when "ignore"
           row.each_with_index do |ignore, i|
             ignore_cols.push i-1 unless ignore.empty? or i == 0
@@ -132,6 +137,7 @@ module Databasion
         'plural'      => plural,
         'fields'      => fields[1..fields.size],
         'types'       => types[1..types.size],
+        'indexes'     => indexes,
         'data'        => data,
         'ignore_cols' => ignore_cols
       }

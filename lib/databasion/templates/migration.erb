@@ -5,6 +5,11 @@ class <%= class_name %>Migration < ActiveRecord::Migration
       t.<%= field['type'] %> :<%= field['field'] %><%= ', :limit => %s' % field['size'] if field['size'] %><%= ', :default => %s' % field['default'] if field['default'] %><%= ', :options => "PRIMARY KEY"' if field['field'] == 'id' %><%= "\n" %>
     <% end %>
     end
+    <% if indexes.size > 1 %>
+    add_index :<%= table_name %>, [<%= indexes.collect {|i| ":%s" % i }.join(",") %>]
+    <% elsif indexes.size == 1 %>
+    add_index :<%= table_name %>, :<%= indexes[0] %><%= "\n" %>
+    <% end %>
   end
   def self.down
     drop_table :<%= table_name %><%= "\n" %>
