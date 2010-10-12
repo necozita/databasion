@@ -58,7 +58,7 @@ module Databasion
     
     def self.set_table_name(meta)
       return meta['name'].pluralize if meta['plural']
-      meta['name'].pluralize
+      meta['name']
     end
     
     def self.ruby_model(meta)
@@ -76,7 +76,7 @@ module Databasion
     end
     
     def self.ruby_model_name(meta)
-      meta['plural'] ? meta['name'].camelize.pluralize : meta['name'].camelize
+      meta['name'].camelize
     end
     
     def self.ruby_model_table_name(meta)

@@ -59,7 +59,8 @@ module Databasion
         spreadsheet.worksheets.each do |worksheet|
           next unless master_list.collect { |row| row['spreadsheet'] }.include?(worksheet.title)
           data_hash = parse(worksheet)
-          data_hash['connection'] = master_list.collect { |row| row if row['spreadsheet'] == data_hash['name'] }.reject { |d| d.nil? }[0]
+          data_hash['connection'] = master_list.collect { |row| row if row['spreadsheet'] == worksheet.title }.reject { |d| d.nil? }[0]
+          puts data_hash.inspect
           Databasion::Yamalize.yamlbate(data_hash, @@config['output']['yaml_path'])
         end
       end
@@ -103,11 +104,13 @@ module Databasion
 
         case row[0]
         when "table"
-          if d = row[1].split(",")
-            name = d[0]
-            plural = false if d[1] == 'false'
-          else
+          begin
+            d = row[1].split(",")
+            name = d[0].strip
+            plural = false if d[1].strip == 'false'
+          rescue
             name = row[1]
+            plural = true
           end
         when "field"
           row.each do |field|

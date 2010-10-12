@@ -2,11 +2,9 @@
 
 ## Google Spreadsheet/Excel -> YAML -> Ruby Migration -> Database Management Tool
 
-If we were all part of a hive mind, we wouldn't need management anything.  Databases would get built, the correct columns would get used, programmers would align their ORMs, and keeping it all together wouldn't be some kind of management nightmare.
+A database management tool.  The theory is that a designer/planner can edit application data, a programmer can setup the database and it's fields, all in one happy little place.  As tables are added, and data is changed, if the script is run once again it will update the target database.
 
-Fortunately we aren't a hive mind*.  Still, even though my coworkers can't read my mind, we've come up with a tool that allows top end planners to describe system data in a spreadsheet, programmers to fudge in the column types, sizes, and database relationships, and everyone to export it out into YAML and Ruby migration scripts which update your infrastructure.  Ideally the fully automated suite is used in your test environment so your planner can quickly test changes, and a step by step process used if you are updating production machines.
-
-* If we were I would be just as confused as I am any other day, our office's main language is Japanese.  Although I've been studying it for 9 years...
+TODO: While this system uses Rails Migrations, it isn't taking full advantage of them (i.e. tracking changes, allowing for rollbacks, etc.).  This was also created under a high pressure timeline, so it was unfortunate that I could not create a fully working test suite.
 
 ## Requirements
 
@@ -136,7 +134,7 @@ __0.1.0__
 
 ## Testing
 
-Currently Databasion uses the cucumber test suite.  Any patches or pull requests must have a corresponding Feature, and all tests must pass.  Feature branches get bonus points.
+Currently Databasion uses the cucumber test suite.  The tests aren't complete, unfortunately.
 
 ## Author
 
