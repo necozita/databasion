@@ -24,8 +24,8 @@ module Databasion
       raise SvnilizeError, "A file lock is in place.  Cannot commit." if check_lock?
       create_lock
       svn_add_files(path)
-      Databasion::LOGGER.info 'running: svn commit -m "svn auto commit"'
-      system svn_path + ' commit -m "svn auto commit"'
+      Databasion::LOGGER.info 'running: svn commit -m "databasion auto commit"'
+      system svn_path + ' commit -m "databasion auto commit"'
       Databasion::LOGGER.info 'running: svn update'
       system svn_path + ' update'
       remove_lock
@@ -40,8 +40,7 @@ module Databasion
     end
     
     def self.check_lock?
-      return true if File.exist?('svn.lock')
-      false
+      File.exist?('svn.lock') ? true : false
     end
     
     def self.create_lock

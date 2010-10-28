@@ -15,3 +15,6 @@ output:
 svn:
   bin: /usr/bin/svn
   repo: svn://repo/path
+  
+git:
+  bin: /usr/local/bin/git

@@ -20,6 +20,7 @@ module Databasion
         opt :migrate, "Migrate after Googlizing or Excelizing"
         opt :update, "Load parsed YAML into migrated database"
         opt :svn, "Auto commit the project files (assuming it has been committed to SVN)"
+        opt :git, "Auto commit the project files (assuming a working git repo)"
       end
       if opts[:config].nil? and opts[:create].nil?
         config = "config/google.yml"
@@ -50,6 +51,9 @@ module Databasion
       end
       if opts[:svn]
         Databasion.databate('svn', opts[:config])
+      end
+      if opts[:git]
+        Databasion.databate('git', opts[:config])
       end
     end
     

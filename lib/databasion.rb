@@ -31,6 +31,8 @@ module Databasion
       loadalize
     when "svn"
       svnilize
+    when "git"
+      gitilize
     end
   end
   
@@ -57,6 +59,11 @@ module Databasion
   def self.svnilize
     Databasion::Svnilize.config = @@config
     Databasion::Svnilize.commit
+  end
+  
+  def self.gitilize
+    Databasion::Gitilize.config = @@config
+    Databasion::Gitilize.commit
   end
 
   def self.set_ar_logger
