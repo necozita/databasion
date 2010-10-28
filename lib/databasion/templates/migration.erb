@@ -2,9 +2,12 @@ class <%= class_name %>Migration < ActiveRecord::Migration
   def self.up
     create_table :<%= table_name %><%= ', :id => false' if fields.collect {|f| f['field']}.include?('id') %> do |t|
     <% for field in fields %>
-      t.<%= field['type'] %> :<%= field['field'] %><%= ', :limit => %s' % field['size'] if field['size'] %><%= ', :default => %s' % field['default'] if field['default'] %><%= ', :options => "PRIMARY KEY"' if field['field'] == 'id' %><%= "\n" %>
+      t.<%= field['type'] %> :<%= field['field'] %><%= ', :limit => %s' % field['size'] if field['size'] %><%= "\n" %>
     <% end %>
     end
+    <% if fields.collect {|f| f['field']}.include?('id') %>
+    execute "ALTER TABLE <%= table_name %> ADD PRIMARY KEY (id)"
+    <% end %>
     <% if indexes.size > 1 %>
     add_index :<%= table_name %>, [<%= indexes.collect {|i| ":%s" % i }.join(",") %>]
     <% elsif indexes.size == 1 %>

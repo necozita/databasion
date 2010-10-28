@@ -2,7 +2,7 @@
 
 ## Google Spreadsheet/Excel -> YAML -> Ruby Migration -> Database Management Tool
 
-A database management tool.  The theory is that a designer/planner can edit application data, a programmer can setup the database and it's fields, all in one happy little place.  As tables are added, and data is changed, if the script is run once again it will update the target database.
+A database management tool.  The theory is that a designer/planner can edit application data and a programmer can setup the database and it's fields, all in one happy little place.  As tables are added and data is changed, if the script is run once again it will update the target database.
 
 TODO: While this system uses Rails Migrations, it isn't taking full advantage of them (i.e. tracking changes, allowing for rollbacks, etc.).  This was also created under a high pressure timeline, so it was unfortunate that I could not create a fully working test suite.
 
@@ -102,14 +102,15 @@ Edit _config/google.yml_.  Then run the scripts.
     databasion --migrate
     databasion --update
     databasion --svn
+    databasion --git
     
 Or run them all in order.
 
-    databasion --google --migrate --update --svn
+    databasion --google --migrate --update --git
     
 You can supply a different config path as well.
 
-    databasion -g -m -u -s --config config/my.other.config.yml
+    databasion -g -m -u -i --config config/my.other.config.yml
     
 Someone administrating a production database with this tool would definitely want to run each script sequentially by hand.
     
@@ -121,16 +122,19 @@ Someone administrating a production database with this tool would definitely wan
 * _sheets_: A list of the keys gleaned from the Google Docs URL, and a human readable name.
 * _output_: Where to output the relevant data.
 * _svn_: SVN configuration data.
+* _git_: GIT configuration data.
 
 ## SVN
 
 If the currently created databasion project is committed to SVN, running the _--svn_ switch will auto-add and commit all the project files.  This is useful for maintaining version control of the system, especially if something goes wrong and you need to do a rollback.
 
+## GIT
+
+Much like SVN, if the project is commited to a GIT repo, the _--git_ switch will auto-add and commit all the project files.  If there isn't a repository, it will also initialize a new one for you.
+
 ## Roadmap
 
-__0.1.0__
-
-* Add ability to read existing tables, and make relative alter table migration scripts.
+Long and winding.
 
 ## Testing
 
