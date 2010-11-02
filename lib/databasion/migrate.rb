@@ -12,7 +12,7 @@ module Databasion
       require 'migration_helpers/init'
 
       files = Dir["%s/*.yml" % @@config['output']['yaml_path']]
-      Databasion::Migitize.migrabate(files, @@config)
+      Databasion::BuildMigration.run(files, @@config)
 
       Databasion.set_ar_logger
       Databasion::LOGGER.info "Migrating..."

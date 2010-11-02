@@ -3,4 +3,4 @@ $:.unshift(File.dirname(__FILE__) + '/../lib') unless $:.include?(File.dirname(_
 
 require 'databasion'
 
-Databasion::Applcize.run
+Databasion::Application.run

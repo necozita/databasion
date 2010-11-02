@@ -46,7 +46,7 @@ module Databasion
       if opts[:migrate]
         Databasion.run('migrate', opts[:config])
       end
-      if opts[:update]
+      if opts[:load]
         Databasion.run('load', opts[:config])
       end
       if opts[:svn]

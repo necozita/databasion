@@ -36,8 +36,8 @@ module Databasion
   
   private
   def self.run_google
-    Databasion::GoogeLoader.config = @@config
-    Databasion::GoogeLoader.run
+    Databasion::GoogleLoader.config = @@config
+    Databasion::GoogleLoader.run
   end
   
   def self.run_migrate

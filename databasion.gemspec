@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Brian Jones", "Istpika"]
-  s.date = %q{2010-10-28}
+  s.date = %q{2010-11-02}
   s.default_executable = %q{databasion}
   s.email = %q{mojobojo@gmail.com}
   s.executables = ["databasion"]
@@ -35,18 +35,16 @@ Gem::Specification.new do |s|
      "features/databasion/yamalize.feature",
      "features/step_definitions/databasion_steps.rb",
      "lib/databasion.rb",
-     "lib/databasion/applcize.rb",
-     "lib/databasion/csvilize.rb",
-     "lib/databasion/datacize.rb",
-     "lib/databasion/excelize.rb",
-     "lib/databasion/gitilize.rb",
-     "lib/databasion/googlize.rb",
-     "lib/databasion/loadlize.rb",
-     "lib/databasion/migitize.rb",
-     "lib/databasion/svnilize.rb",
+     "lib/databasion/application.rb",
+     "lib/databasion/build_migration.rb",
+     "lib/databasion/git_committer.rb",
+     "lib/databasion/google_loader.rb",
+     "lib/databasion/load_data.rb",
+     "lib/databasion/migrate.rb",
+     "lib/databasion/svn_committer.rb",
      "lib/databasion/templates/migration.erb",
      "lib/databasion/templates/model.erb",
-     "lib/databasion/yamalize.rb",
+     "lib/databasion/yaml_builder.rb",
      "lib/migration_helpers/MIT-LICENSE",
      "lib/migration_helpers/README.markdown",
      "lib/migration_helpers/init.rb",

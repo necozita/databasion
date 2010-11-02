@@ -11,7 +11,7 @@ module Databasion
     @@table_def  = 'table'
     @@field_def  = 'field'
     @@type_def   = 'type'
-    @@indef_def  = 'index'
+    @@index_def  = 'index'
     @@ignore_def = 'ignore'
     
     def self.config?
