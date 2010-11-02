@@ -12,7 +12,7 @@ module Databasion
       @@config
     end
    
-    def self.run
+    def self.run(opts)
       Databasion.set_ar_logger
       Databasion::LOGGER.info "Updating from YAML..."
 

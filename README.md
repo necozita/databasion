@@ -4,7 +4,7 @@
 
 A database management tool.  The theory is that a designer/planner can edit application data and a programmer can setup the database and it's fields, all in one happy little place.  As tables are added and data is changed, if the script is run once again it will update the target database.
 
-TODO: While this system uses Rails Migrations, it isn't taking full advantage of them (i.e. tracking changes, allowing for rollbacks, etc.).  This was also created under a high pressure timeline, so it was unfortunate that I could not create a fully working test suite.
+TODO: While this system uses Rails Migrations, it isn't taking full advantage of them (i.e. tracking changes, allowing for rollbacks, etc).
 
 ## Requirements
 
@@ -138,7 +138,7 @@ Long and winding.
 
 ## Testing
 
-Currently Databasion uses the cucumber test suite.  The tests aren't complete, unfortunately.
+Currently Databasion uses the cucumber test suite.  A functional set of rudimentary tests are currently available, but it does not test everything 100%.
 
 ## Author
 

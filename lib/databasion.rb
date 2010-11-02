@@ -14,7 +14,7 @@ module Databasion
   
   @@config = nil
   
-  def self.run(system, config=nil)
+  def self.run(system, config=nil, opts=nil)
     LOGGER.level = Logger::INFO
     
     raise DatabasionError, 'Databasion requires a YAML config file path.' if config.nil?
@@ -26,7 +26,7 @@ module Databasion
     when "migrate"
       run_migrate
     when "load"
-      run_load
+      run_load(opts)
     when "svn"
       run_svn
     when "git"
@@ -45,9 +45,9 @@ module Databasion
     Databasion::Migrate.run
   end
   
-  def self.run_load
+  def self.run_load(opts)
     Databasion::LoadData.config = @@config
-    Databasion::LoadData.run
+    Databasion::LoadData.run(opts)
   end
   
   def self.run_svn

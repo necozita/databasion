@@ -19,6 +19,7 @@ module Databasion
         opt :google, "Load data from Google Spreadsheets"
         opt :migrate, "Migrate after GoogleLoading"
         opt :load, "Load parsed YAML data into migrated database"
+        opt :diff, "Manually check the diff of each database update from the load command"
         opt :svn, "Auto commit the project files (assuming it has been committed to SVN)"
         opt :git, "Auto commit the project files (assuming a working git repo)"
       end
@@ -41,19 +42,19 @@ module Databasion
     
     def self.execute_databasion(opts)
       if opts[:google]
-        Databasion.run('google', opts[:config])
+        Databasion.run('google', opts[:config], opts)
       end
       if opts[:migrate]
-        Databasion.run('migrate', opts[:config])
+        Databasion.run('migrate', opts[:config], opts)
       end
       if opts[:load]
-        Databasion.run('load', opts[:config])
+        Databasion.run('load', opts[:config], opts)
       end
       if opts[:svn]
-        Databasion.run('svn', opts[:config])
+        Databasion.run('svn', opts[:config], opts)
       end
       if opts[:git]
-        Databasion.run('git', opts[:config])
+        Databasion.run('git', opts[:config], opts)
       end
     end
     
