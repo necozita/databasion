@@ -3,7 +3,7 @@ require 'fileutils'
 
 module Databasion
   
-  class Applcize
+  class Application
     
     def self.run
       opts = Trollop::options do
@@ -16,9 +16,9 @@ module Databasion
         EOS
         opt :create, "Create a base deploy directory", :type => String
         opt :config, "Path to YAML config.  Looks for config/google.yml by default", :type => String
-        opt :google, "Googlize data from Google Spreadsheets"
-        opt :migrate, "Migrate after Googlizing or Excelizing"
-        opt :update, "Load parsed YAML into migrated database"
+        opt :google, "Load data from Google Spreadsheets"
+        opt :migrate, "Migrate after GoogleLoading"
+        opt :load, "Load parsed YAML data into migrated database"
         opt :svn, "Auto commit the project files (assuming it has been committed to SVN)"
         opt :git, "Auto commit the project files (assuming a working git repo)"
       end
@@ -41,19 +41,19 @@ module Databasion
     
     def self.execute_databasion(opts)
       if opts[:google]
-        Databasion.databate('google', opts[:config])
+        Databasion.run('google', opts[:config])
       end
       if opts[:migrate]
-        Databasion.databate('migrate', opts[:config])
+        Databasion.run('migrate', opts[:config])
       end
       if opts[:update]
-        Databasion.databate('update', opts[:config])
+        Databasion.run('load', opts[:config])
       end
       if opts[:svn]
-        Databasion.databate('svn', opts[:config])
+        Databasion.run('svn', opts[:config])
       end
       if opts[:git]
-        Databasion.databate('git', opts[:config])
+        Databasion.run('git', opts[:config])
       end
     end
     

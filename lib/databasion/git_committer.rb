@@ -1,10 +1,10 @@
 module Databasion
   
-  class Gitilize
+  class GitCommitter
     
     @@config = nil
     
-    class GitilizeError < StandardError; end
+    class GitCommitterError < StandardError; end
     
     def self.config=(config)
       @@config = config
@@ -19,7 +19,7 @@ module Databasion
     end
     
     def self.commit(path=Dir.pwd)
-      raise GitilizeError, "A file lock is in place.  Cannot commit." if check_lock?
+      raise GitCommitterError, "A file lock is in place.  Cannot commit." if check_lock?
       create unless check_repo?
       create_lock
       Databasion::LOGGER.info 'running: git commit -am "databasion auto commit"'

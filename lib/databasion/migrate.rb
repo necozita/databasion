@@ -1,6 +1,6 @@
 module Databasion
   
-  class Datacize
+  class Migrate
     
     @@config = nil
     
@@ -8,7 +8,7 @@ module Databasion
       @@config = config
     end
     
-    def self.datacize
+    def self.run
       require 'migration_helpers/init'
 
       files = Dir["%s/*.yml" % @@config['output']['yaml_path']]

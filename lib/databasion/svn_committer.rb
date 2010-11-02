@@ -2,11 +2,11 @@ require 'fileutils'
 
 module Databasion
   
-  class Svnilize
+  class SvnCommitter
     
     @@config = nil
     
-    class SvnilizeError < StandardError; end
+    class SvnCommitterError < StandardError; end
     
     def self.config=(config)
       @@config = config
@@ -21,7 +21,7 @@ module Databasion
     end
     
     def self.commit(path=Dir.pwd)
-      raise SvnilizeError, "A file lock is in place.  Cannot commit." if check_lock?
+      raise SvnCommitterError, "A file lock is in place.  Cannot commit." if check_lock?
       create_lock
       svn_add_files(path)
       Databasion::LOGGER.info 'running: svn commit -m "databasion auto commit"'

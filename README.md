@@ -100,17 +100,17 @@ Edit _config/google.yml_.  Then run the scripts.
 
     databasion --google
     databasion --migrate
-    databasion --update
+    databasion --load
     databasion --svn
     databasion --git
     
 Or run them all in order.
 
-    databasion --google --migrate --update --git
+    databasion --google --migrate --load --git
     
 You can supply a different config path as well.
 
-    databasion -g -m -u -i --config config/my.other.config.yml
+    databasion -g -m -l -i --config config/my.other.config.yml
     
 Someone administrating a production database with this tool would definitely want to run each script sequentially by hand.
     

@@ -1,6 +1,6 @@
 module Databasion
   
-  class Loadlize
+  class LoadData
     
     @@config = nil
     
@@ -12,7 +12,7 @@ module Databasion
       @@config
     end
    
-    def self.loadalize
+    def self.run
       Databasion.set_ar_logger
       Databasion::LOGGER.info "Updating from YAML..."
 

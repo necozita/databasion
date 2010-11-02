@@ -2,12 +2,12 @@ require 'fileutils'
 
 module Databasion
   
-  class YamalizeError < StandardError; end
+  class YamlBuilderError < StandardError; end
   
-  class Yamalize
+  class YamlBuilder
     
-    def self.yamlbate(data_hash, output_path=nil)
-      raise YamalizeError, 'Databasion::Yamalize requires an output path.' if output_path.nil?
+    def self.run(data_hash, output_path=nil)
+      raise YamalizeError, 'Databasion::YamlBuilder requires an output path.' if output_path.nil?
       @@output_path = output_path
       
       Databasion::LOGGER.info "Yamlbating %s..." % data_hash['name']

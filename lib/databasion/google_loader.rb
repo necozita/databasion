@@ -2,14 +2,20 @@ require "google_spreadsheet"
 
 module Databasion
   
-  class GooglizeError < StandardError; end
+  class GoogleLoaderError < StandardError; end
   
-  class Googlize
+  class GoogleLoader
 
     @@master_sheet = 'Database'
     
+    @@table_def  = 'table'
+    @@field_def  = 'field'
+    @@type_def   = 'type'
+    @@indef_def  = 'index'
+    @@ignore_def = 'ignore'
+    
     def self.config?
-      raise 'Googlize cannot load without a config.' unless defined?(@@config)
+      raise GoogleLoaderError, 'GoogleLoader cannot load without a config.' unless defined?(@@config)
       true
     end
     
@@ -38,21 +44,22 @@ module Databasion
       begin
         @@session = GoogleSpreadsheet.login(@@config['login']['username'], @@config['login']['password'])
       rescue
-        raise GooglizeError, "Couldn't log into Google."
+        raise GoogleLoaderError, "Couldn't log into Google."
       end
     end
     
-    def self.googlebate
+    def self.run
       config?
       login
-      
-      Databasion::LOGGER.info "Googlizing..."
-      process
-      Databasion::LOGGER.info "Googlized!"
+      process.each do |data_hash|
+        Databasion::YamlBuilder.run(data_hash, @@config['output']['yaml_path'])
+      end
     end
     
     private
     def self.process
+      Databasion::LOGGER.info "Googlizing..."
+      data_list = []
       @@config['sheets'].each do |token|
         spreadsheet = @@session.spreadsheet_by_key(token['key'])
         master_list  = get_master(spreadsheet)
@@ -60,9 +67,11 @@ module Databasion
           next unless master_list.collect { |row| row['spreadsheet'] }.include?(worksheet.title)
           data_hash = parse(worksheet)
           data_hash['connection'] = master_list.collect { |row| row if row['spreadsheet'] == worksheet.title }.reject { |d| d.nil? }[0]
-          Databasion::Yamalize.yamlbate(data_hash, @@config['output']['yaml_path'])
+          data_list << data_hash
         end
       end
+      Databasion::LOGGER.info "Googlized!"
+      data_list
     end
     
     def self.get_master(spreadsheet)
@@ -102,7 +111,7 @@ module Databasion
         next if (row.reject { |s| s.strip.empty? }).size == 0
 
         case row[0]
-        when "table"
+        when @@table_def
           begin
             d = row[1].split(",")
             name = d[0].strip
@@ -111,19 +120,19 @@ module Databasion
             name = row[1]
             plural = true
           end
-        when "field"
+        when @@field_def
           row.each do |field|
             fields.push field unless field.empty?
           end
-        when "type"
+        when @@type_def
           row.each do |type|
             types.push type unless type.empty?
           end
-        when "index"
+        when @@index_def
           row.each_with_index do |index, i|
             indexes.push i-1 unless index.empty? or i == 0
           end
-        when "ignore"
+        when @@ignore_def
           row.each_with_index do |ignore, i|
             ignore_cols.push i-1 unless ignore.empty? or i == 0
           end

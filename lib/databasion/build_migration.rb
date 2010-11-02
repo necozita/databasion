@@ -4,20 +4,18 @@ require 'fileutils'
 
 module Databasion
   
-  class MigitizeError < StandardError; end
+  class BuildMigrationError < StandardError; end
   
-  class Migitize
+  class BuildMigration
     
     @@migration_start = 100
     
-    def self.migrabate(file_list=[], config=nil)
-      raise MigitizeError, 'Databasion::Migitize requires an array list of files.  Try Yamalizing first.' if file_list.empty?
-      raise MigitizeError, 'Databasion::Migitize requires a parsed YAML config.' if config.nil?
+    def self.run(file_list=[], config=nil)
+      raise BuildMigrationError, 'Databasion::BuildMigration requires an array list of files.  Try GoogleLoading first.' if file_list.empty?
+      raise BuildMigrationError, 'Databasion::BuildMigration requires a parsed YAML config.' if config.nil?
       @@config = config
       
-      Databasion::LOGGER.info "Migrabating..."
       parse(file_list)
-      Databasion::LOGGER.info "Migrabated!"
     end
     
     private
@@ -28,6 +26,7 @@ module Databasion
     end
     
     def self.parse(file_list)
+      Databasion::LOGGER.info "Migrabating..."
       database_configs = []
       file_list.each do |file|
         meta = YAML.load(File.open(file))['meta']
@@ -35,6 +34,7 @@ module Databasion
         process(meta)
       end
       write_database_yaml(database_configs)
+      Databasion::LOGGER.info "Migrabated!"
     end
     
     def self.process(meta)
@@ -116,6 +116,7 @@ module Databasion
       f = File.open("config/database.yml", 'w')
       f.write(YAML.dump(output))
       f.close
+      Databasion::LOGGER.info "Wrote database config..."
     end
     
     def self.migration_exists?(file_name)

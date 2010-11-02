@@ -14,7 +14,7 @@ module Databasion
   
   @@config = nil
   
-  def self.databate(system, config=nil)
+  def self.run(system, config=nil)
     LOGGER.level = Logger::INFO
     
     raise DatabasionError, 'Databasion requires a YAML config file path.' if config.nil?
@@ -22,63 +22,55 @@ module Databasion
     
     case system
     when "google"
-      googlize
-    when "excel"
-      excelize
+      run_google
     when "migrate"
-      datacize
-    when "update"
-      loadalize
+      run_migrate
+    when "load"
+      run_load
     when "svn"
-      svnilize
+      run_svn
     when "git"
-      gitilize
+      run_git
     end
   end
   
   private
-  def self.googlize
-    Databasion::Googlize.config = @@config
-    Databasion::Googlize.googlebate
-  end
-
-  def self.excelize
-    Databasion::Excelize.excelbate
+  def self.run_google
+    Databasion::GoogeLoader.config = @@config
+    Databasion::GoogeLoader.run
   end
   
-  def self.datacize
-    Databasion::Datacize.config = @@config
-    Databasion::Datacize.datacize
+  def self.run_migrate
+    Databasion::Migrate.config = @@config
+    Databasion::Migrate.run
   end
   
-  def self.loadalize
-    Databasion::Loadlize.config = @@config
-    Databasion::Loadlize.loadalize
+  def self.run_load
+    Databasion::LoadData.config = @@config
+    Databasion::LoadData.run
   end
   
-  def self.svnilize
-    Databasion::Svnilize.config = @@config
-    Databasion::Svnilize.commit
+  def self.run_svn
+    Databasion::SvnCommitter.config = @@config
+    Databasion::SvnCommitter.commit
   end
   
-  def self.gitilize
-    Databasion::Gitilize.config = @@config
-    Databasion::Gitilize.commit
+  def self.run_svn
+    Databasion::GitCommitter.config = @@config
+    Databasion::GitCommitter.commit
   end
 
   def self.set_ar_logger
     ActiveRecord::Base.logger = Databasion::LOGGER
   end
   
-  autoload :Applcize, APP_PATH + '/databasion/applcize.rb'
-  autoload :Googlize, APP_PATH + '/databasion/googlize.rb'
-  autoload :Yamalize, APP_PATH + '/databasion/yamalize.rb'
-  autoload :Excelize, APP_PATH + '/databasion/excelize.rb'
-  autoload :Csvilize, APP_PATH + '/databasion/csvilize.rb'
-  autoload :Migitize, APP_PATH + '/databasion/migitize.rb'
-  autoload :Loadlize, APP_PATH + '/databasion/loadlize.rb'
-  autoload :Datacize, APP_PATH + '/databasion/datacize.rb'
-  autoload :Svnilize, APP_PATH + '/databasion/svnilize.rb'
-  autoload :Gitilize, APP_PATH + '/databasion/gitilize.rb'
+  autoload :Application,    APP_PATH + '/databasion/application.rb'
+  autoload :GoogleLoader,   APP_PATH + '/databasion/google_loader.rb'
+  autoload :YamlBuilder,    APP_PATH + '/databasion/yaml_builder.rb'
+  autoload :Migrate,        APP_PATH + '/databasion/migrate.rb'
+  autoload :BuildMigration, APP_PATH + '/databasion/build_migration.rb'
+  autoload :LoadData,       APP_PATH + '/databasion/load_data.rb'
+  autoload :SvnCommitter,   APP_PATH + '/databasion/svn_committer.rb'
+  autoload :GitCommitter,   APP_PATH + '/databasion/git_committer.rb'
   
 end
