@@ -123,6 +123,7 @@ Someone administrating a production database with this tool would definitely wan
 * _output_: Where to output the relevant data.
 * _svn_: SVN configuration data.
 * _git_: GIT configuration data.
+* _cron_: Crontab parameters.
 
 ## SVN
 
@@ -131,6 +132,24 @@ If the currently created databasion project is committed to SVN, running the _--
 ## GIT
 
 Much like SVN, if the project is commited to a GIT repo, the _--git_ switch will auto-add and commit all the project files.  If there isn't a repository, it will also initialize a new one for you.
+
+## Version Control
+
+There is now a system in place to do crontab driven auto-updates.  This allows the data to be updated without anyone having to access any systems.
+
+First update _config/google.yml_'s cron section to reflect your project settings.  The _options_ are your standard databasion switches.  Make sure to supply a location for the version file so that it can be read at a later date.
+
+Next, add a _Version_ spreadsheet to the master worksheet.  In the A1 field use whichever number works best to start versioning with.  When using this to manage the project, if the number is higher than before then the system will be updated.  Currently version controlled rollbacks are not implemented.
+
+Finally, add the databasion script to crontab.
+
+Example crontab:
+
+    */1 * * * * cd /home/my_user/project && databasion -r
+    
+This checks the Version spreadsheet once a minute, and if the version has changed runs databasion with the supplied options.
+
+Note:  This could easily be used from the commandline as well, and not just crontab.
 
 ## Roadmap
 

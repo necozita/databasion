@@ -22,6 +22,7 @@ module Databasion
         opt :diff, "Manually check the diff of each database update from the load command"
         opt :svn, "Auto commit the project files (assuming it has been committed to SVN)"
         opt :git, "Auto commit the project files (assuming a working git repo)"
+        opt :cron, "Run the version control system via crontab and update on version changes"
       end
       if opts[:config].nil? and opts[:create].nil?
         config = "config/google.yml"
@@ -41,6 +42,9 @@ module Databasion
     end
     
     def self.execute_databasion(opts)
+      if opts[:cron]
+        Databasion.run('cron', opts[:config], opts)
+      end
       if opts[:google]
         Databasion.run('google', opts[:config], opts)
       end

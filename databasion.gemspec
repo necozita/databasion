@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Brian Jones", "Istpika"]
-  s.date = %q{2010-11-02}
+  s.date = %q{2010-11-04}
   s.default_executable = %q{databasion}
   s.email = %q{mojobojo@gmail.com}
   s.executables = ["databasion"]
@@ -24,16 +24,15 @@ Gem::Specification.new do |s|
      "bin/databasion",
      "config/example.google.yml",
      "databasion.gemspec",
-     "features/databasion.feature",
-     "features/databasion/googlize.feature",
-     "features/databasion/migitize.feature",
-     "features/databasion/step_definitions/googlize_steps.rb",
-     "features/databasion/step_definitions/migitize_steps.rb",
-     "features/databasion/step_definitions/svnilize_steps.rb",
-     "features/databasion/step_definitions/yamalize_steps.rb",
-     "features/databasion/svnilize.feature",
-     "features/databasion/yamalize.feature",
-     "features/step_definitions/databasion_steps.rb",
+     "features/build_migration.feature",
+     "features/create_project.feature",
+     "features/env/helper_methods.rb",
+     "features/google_loader.feature",
+     "features/step_definitions/build_migration_steps.rb",
+     "features/step_definitions/create_project_steps.rb",
+     "features/step_definitions/google_loader_steps.rb",
+     "features/step_definitions/yaml_builder_steps.rb",
+     "features/yaml_builder.feature",
      "lib/databasion.rb",
      "lib/databasion/application.rb",
      "lib/databasion/build_migration.rb",

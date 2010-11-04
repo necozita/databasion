@@ -31,6 +31,8 @@ module Databasion
       run_svn
     when "git"
       run_git
+    when "cron"
+      run_cron
     end
   end
   
@@ -55,9 +57,14 @@ module Databasion
     Databasion::SvnCommitter.commit
   end
   
-  def self.run_svn
+  def self.run_git
     Databasion::GitCommitter.config = @@config
     Databasion::GitCommitter.commit
+  end
+  
+  def self.run_cron
+    Databasion::CronSystem.config = @@config
+    Databasion::CronSystem.run
   end
 
   def self.set_ar_logger
@@ -72,5 +79,6 @@ module Databasion
   autoload :LoadData,       APP_PATH + '/databasion/load_data.rb'
   autoload :SvnCommitter,   APP_PATH + '/databasion/svn_committer.rb'
   autoload :GitCommitter,   APP_PATH + '/databasion/git_committer.rb'
+  autoload :CronSystem,     APP_PATH + '/databasion/cron_system.rb'
   
 end

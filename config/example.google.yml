@@ -18,3 +18,9 @@ svn:
   
 git:
   bin: /usr/local/bin/git
+    
+cron:
+  project_base: /home/user/project
+  version:
+    file: /home/user/project/config/version
+  options: -g -m -l -i

@@ -6,7 +6,8 @@ module Databasion
   
   class GoogleLoader
 
-    @@master_sheet = 'Database'
+    @@master_sheet  = 'Database'
+    @@version_sheet = 'Version'
     
     @@table_def  = 'table'
     @@field_def  = 'field'
@@ -40,6 +41,14 @@ module Databasion
       @@master_sheet
     end
     
+    def self.version_sheet=(version)
+      @@version_sheet = version
+    end
+    
+    def self.version_sheet
+      @@version_sheet
+    end
+    
     def self.login
       begin
         @@session = GoogleSpreadsheet.login(@@config['login']['username'], @@config['login']['password'])
@@ -54,6 +63,12 @@ module Databasion
       process.each do |data_hash|
         Databasion::YamlBuilder.run(data_hash, @@config['output']['yaml_path'])
       end
+    end
+    
+    def self.run_version
+      config?
+      login
+      fetch_version
     end
     
     private
@@ -78,7 +93,7 @@ module Databasion
       master_list = []
       header_info = nil
       spreadsheet.worksheets.each do |worksheet|
-        if worksheet.title == @@master_sheet
+        if worksheet.title == master_sheet
           worksheet.rows.each_with_index do |row, index|
             if index == 0
               header_info = row
@@ -93,7 +108,7 @@ module Databasion
           break
         end
       end
-      raise GooglizeError, "There was no master sheet defined in the spreadsheet %s." % token['name'] if master_list.size == 0
+      raise GoogleLoaderError, "There was no master sheet defined in the spreadsheet %s." % token['name'] if master_list.size == 0
       master_list
     end
     
@@ -152,6 +167,22 @@ module Databasion
         'data'        => data,
         'ignore_cols' => ignore_cols
       }
+    end
+    
+    def self.fetch_version
+      version = nil
+      @@config['sheets'].each do |token|
+        spreadsheet = @@session.spreadsheet_by_key(token['key'])
+        spreadsheet.worksheets.each do |worksheet|
+          if worksheet.title == version_sheet
+            worksheet.rows.each do |row|
+              version = row[0]
+            end
+          end
+        end
+      end
+      raise GoogleLoaderError, "A Version spreadsheet was not found in any of the Google Spreadsheets supplied in google.yml" if version.nil?
+      version
     end
     
   end
