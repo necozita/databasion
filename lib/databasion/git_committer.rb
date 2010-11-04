@@ -31,6 +31,7 @@ module Databasion
       Databasion::LOGGER.info 'creating new git repository'
       Databasion::LOGGER.info 'running: git init'
       system git_path + ' init'
+      system git_path + ' add .'
     end
     
     def self.check_repo?
