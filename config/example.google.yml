@@ -1,10 +1,12 @@
+project_base: /home/user/project
+
 login:
   username: fakeuser
   password: fakepass
   
 sheets:  
   - name: non_existant_spreadsheet
-    key: key_google_doc_key
+    key: google_doc_key
     
 output:
   yaml_path: 'data'
@@ -18,9 +20,11 @@ svn:
   
 git:
   bin: /usr/local/bin/git
-    
-cron:
-  project_base: /home/user/project
-  version:
-    file: /home/user/project/config/version
-  options: -g -m -l -i
+  
+environments:
+  development:
+    cron_options: -g -m -l -i
+  test:
+    cron_options: -l
+  production:
+    cron_options: -l
