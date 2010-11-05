@@ -165,3 +165,5 @@ __Brian Jones__ - Server Engineer, [Istpika](http://www.istpika.com)
 
 * Work: <brian.jones@istpika.com>
 * Personal: <mojobojo@gmail.com>
+
+* Twitter: [mojobojo](http://twitter.com/mojobojo)

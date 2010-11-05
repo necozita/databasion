@@ -9,7 +9,7 @@ class <%= class_name %>Migration < ActiveRecord::Migration
     execute "ALTER TABLE <%= table_name %> ADD PRIMARY KEY (id)"
     <% end %>
     <% if indexes.size > 1 %>
-    add_index :<%= table_name %>, [<%= indexes.collect {|i| ":%s" % i }.join(",") %>]
+    add_index :<%= table_name %>, [<%= indexes.collect {|i| ":%s" % i }.join(", ") %>]
     <% elsif indexes.size == 1 %>
     add_index :<%= table_name %>, :<%= indexes[0] %><%= "\n" %>
     <% end %>
