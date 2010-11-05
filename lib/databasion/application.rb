@@ -23,6 +23,7 @@ module Databasion
         opt :svn, "Auto commit the project files (assuming it has been committed to SVN)"
         opt :git, "Auto commit the project files (assuming a working git repo)"
         opt :cron, "Run the version control system via crontab and update on version changes"
+        opt :env, "Define the environment with which to run.  Default: development"
       end
       if opts[:config].nil? and opts[:create].nil?
         config = "config/google.yml"

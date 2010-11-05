@@ -130,16 +130,18 @@ Edit _config/google.yml_.  Then run the scripts.
     databasion --load
     databasion --svn
     databasion --git
+    databasion --cron
+    databasion --env
     
 Or run them all in order.
 
-    databasion --google --migrate --load --git
+    databasion --google --migrate --load --git --env development
     
 You can supply a different config path as well.
 
     databasion -g -m -l -i --config config/my.other.config.yml
     
-Someone administrating a production database with this tool would definitely want to run each script sequentially by hand.
+The environment switch defaults to _development_.
     
 ### YAML Configuration
 
@@ -164,7 +166,7 @@ Much like SVN, if the project is commited to a GIT repo, the _--git_ switch will
 
 Keywords are also supported in the _ignore_ columns and rows of table definitions.  This allows us to not inadvertently add columns or data to systems which aren't configured to use them yet.  The following is an example.
 
- | column0      |             |              |                    |         |
+ | column0      |             |              |                    |         |                       
  |:-------------|:------------|:-------------|:-------------------|:--------|:----------------------
  | ignore       |             |              |                    | test    | brian_test, bojo_test
  | comment      |             |              |                    |         |                       
@@ -188,7 +190,7 @@ It also follows that the field with the id's 4 and 5 should only be deployed to 
 
 There is now a system in place to do crontab driven auto-updates.  This allows the data to be updated without anyone having to access any systems.
 
-First update _config/google.yml_'s cron section to reflect your project settings.  The _options_ are your standard databasion switches.  Make sure to supply a location for the version file so that it can be read at a later date.
+First update _config/google.yml_'s environment section to reflect your project settings for each given environment.  The _options_ are standard databasion switches.
 
 Next, add an entry for your environment in the _Environment_ spreadsheet, along with the starting version number.  When using this to manage the project, if the number is higher than before then the system will be updated.  Currently version controlled rollbacks are not implemented.
 
@@ -196,9 +198,9 @@ Finally, add the databasion script to crontab.
 
 Example crontab:
 
-    */1 * * * * cd /home/my_user/project && databasion -r
+    */1 * * * * cd /home/my_user/project && databasion -r -e test
     
-This checks the Version spreadsheet once a minute, and if the version has changed runs databasion with the supplied options.
+This checks the Environment spreadsheet once a minute, and if the version for the target system (test in this case) has changed, runs databasion with the supplied options.
 
 Note:  This could easily be used from the commandline as well, and not just crontab.
 
