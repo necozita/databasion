@@ -29,9 +29,34 @@ TODO: While this system uses Rails Migrations, it isn't taking full advantage of
 
 None of this would really work if there weren't some conventions in place.  The following explains how the worksheet needs to be formatted, how the data spreadsheets themselves needs to be formatted, what fields are required, and what fields can be ignored.
 
-At the highest level there needs to be a worksheet named _Database_.  This is simply a master list of related spreadsheets, and what database they correspond to (for split table designs).  The column names are required.
+### Environment and Version Control
 
-### Database
+In order to manage your _environments_ and _versions_ of the data for each environment, an __Environment__ spreadsheet is required.
+
+#### Keywords
+
+Row0 is reserved for keywords, which are listed below.
+
+* environment - Defines your environment.  These follow the standard _development, test, production_ breakdown.  Anything outside of these three are considered special case environments.
+* version - The current version this environment is at in regards to the databasion spreadsheet.  This is also used for auto-updates via crontab.
+
+A typical spreadsheet might look like the following.
+
+| environment | version
+|:------------|:-------
+| development |      50
+| test        |      49
+| production  |      45
+| brian_test  |      55
+| bojo_test   |      50
+
+Versions are tracked by a locally written version file when databasion is ran with the _--cron_ switch.
+
+You will also need to create spreadsheets named after the typical _Development, Test, Production_ keywords.  Within each spreadsheet, database descriptions need to be defined as written below.  The column names are required.
+
+Note: Non-standard environments can also be created, however, they are treated as special case and not part of the environment chain.
+
+### Example 'Development' Spreadsheet
 
 | spreadsheet | dbname| database| username| password| adapter| host     | port| options
 |:------------|:------|:--------|:--------|:--------|:-------|:---------|:----|:-------
@@ -41,7 +66,7 @@ The options column currently support's _force_, which tells the database to drop
 
 Next we define the actual table spreadsheets.
 
-### Superheroes
+### Example 'Superheroes' Table
 
 | column0  |             |              |                    | 
 |:---------|:------------|:-------------|:-------------------|:--------
@@ -56,7 +81,7 @@ Next we define the actual table spreadsheets.
 |          | 3           | Batman       | Rich               | true
 | testing  | 4           | Hulk         | Huge               | false
 
-### Keywords
+### Table Spreadsheet Keywords
 
 * ignore - Anything written in this column will cause this column and it's data to be ignored, with the exception of _environment names_.  See the Environment and Version Control section below for further usage.
 * comment - Ideally a description of the field, what the values means, etc.
@@ -81,13 +106,13 @@ __Ruby Migration Types__
 * time
 * timestamp
 
-### Columns
+#### Columns
 
 Currently column0 is reserved for keywords and comments.
 
 If something besides a keyword is written in column0, that row is ignored and will not be used.  This is useful if you need to edit out some data.
 
-### Rows
+#### Rows
 
 Row0 isn't technically reserved, but should ideally be saved for use with the _ignore_ flag.  If any text is written in a column (with the exception of column0), that column will be ignored.  This is useful for editing out columns that one doesn't currently want in the database.
 
@@ -135,48 +160,23 @@ If the currently created databasion project is committed to SVN, running the _--
 
 Much like SVN, if the project is commited to a GIT repo, the _--git_ switch will auto-add and commit all the project files.  If there isn't a repository, it will also initialize a new one for you.
 
-## Environment and Version Control
-
-In order to manage your _environments_ and _versions_, an __Environment__ spreadsheet is required.
-
-### Environments
-
-Since this system is supposed to be used across a full scale development environment clear up to the production server, we need a way to break out the environments and keep the updates versioned.
-
-#### Keywords
-
-Row0 is reserved for keywords, which are listed below.
-
-* environment - Defines your environment.  These follow the standard _development, test, production_ breakdown.  Anything outside of these three are considered special case environments.
-* version - The current version this environment is at in regards to the databasion spreadsheet.  This is also used for auto-updates via crontab.
-
-A typical spreadsheet might look like the following.
-
-| environment | version
-|:------------|:-------
-| development |      50
-| test        |      49
-| production  |      45
-| brian_test  |      55
-| bojo_test   |      50
-
-Versions are tracked by a locally written version file when databasion is ran with the _--cron_ switch.
+## Keyword Environment Management
 
 Keywords are also supported in the _ignore_ columns and rows of table definitions.  This allows us to not inadvertently add columns or data to systems which aren't configured to use them yet.  The following is an example.
 
  | column0      |             |              |                    |         |
  |:-------------|:------------|:-------------|:-------------------|:--------|:----------------------
  | ignore       |             |              |                    | test    | brian_test, bojo_test
- | comment      |             |              |                    |         |
- | table        | superheroes |              |                    |         |
- | index        | yes         |              |                    |         |
- | field        | id          | name         | power              | cape    | mask
- | type         | integer     | string, 20   | string, 20, Wimp   | boolean | boolean
- |              | 1           | Brian Jones  | Ruby Hacker        | false   | false
- |              | 2           | Superman     | Invincible         | true    | false
- |              | 3           | Batman       | Rich               | true    | true
- | brian_test   | 4           | Hulk         | Huge               | false   | false
- | brian_test   | 5           | Spawn        | Demonic            | true    | true
+ | comment      |             |              |                    |         |                       
+ | table        | superheroes |              |                    |         |                       
+ | index        | yes         |              |                    |         |                       
+ | field        | id          | name         | power              | cape    | mask                  
+ | type         | integer     | string, 20   | string, 20, Wimp   | boolean | boolean               
+ |              | 1           | Brian Jones  | Ruby Hacker        | false   | false                 
+ |              | 2           | Superman     | Invincible         | true    | false                 
+ |              | 3           | Batman       | Rich               | true    | true                  
+ | brian_test   | 4           | Hulk         | Huge               | false   | false                 
+ | brian_test   | 5           | Spawn        | Demonic            | true    | true                  
  
 Environments are updated in the following order:  development -> test -> production.  Special case environments are ignored with the exception of themselves.
  
@@ -217,4 +217,4 @@ __Brian Jones__ - Server Engineer, [Istpika](http://www.istpika.com)
 * Work: <brian.jones@istpika.com>
 * Personal: <mojobojo@gmail.com>
 
-* Twitter: [mojobojo](http://twitter.com/mojobojo) - If you are using databasion give me a shoutout, I'm curious to see who is using this system.
+Twitter: [mojobojo](http://twitter.com/mojobojo) - If you are using databasion give me a shoutout, I'm curious to see who is using this system.
