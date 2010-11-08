@@ -23,7 +23,7 @@ module Databasion
         opt :svn, "Auto commit the project files (assuming it has been committed to SVN)"
         opt :git, "Auto commit the project files (assuming a working git repo)"
         opt :cron, "Run the version control system via crontab and update on version changes"
-        opt :env, "Define the environment with which to run.  Default: development"
+        opt :env, "Define the environment with which to run.  Default: development", :type => String
       end
       if opts[:config].nil? and opts[:create].nil?
         config = "config/google.yml"
@@ -33,6 +33,10 @@ module Databasion
         else  
           Trollop::die :config, "A YAML config must be specified"
         end
+      end
+      
+      if !opts[:env]
+        opts[:env] = 'development'
       end
 
       if opts[:create]
@@ -44,22 +48,22 @@ module Databasion
     
     def self.execute_databasion(opts)
       if opts[:cron]
-        Databasion.run('cron', opts[:config], opts)
+        Databasion.run('cron', opts)
       end
       if opts[:google]
-        Databasion.run('google', opts[:config], opts)
+        Databasion.run('google', opts)
       end
       if opts[:migrate]
-        Databasion.run('migrate', opts[:config], opts)
+        Databasion.run('migrate', opts)
       end
       if opts[:load]
-        Databasion.run('load', opts[:config], opts)
+        Databasion.run('load', opts)
       end
       if opts[:svn]
-        Databasion.run('svn', opts[:config], opts)
+        Databasion.run('svn', opts)
       end
       if opts[:git]
-        Databasion.run('git', opts[:config], opts)
+        Databasion.run('git', opts)
       end
     end
     

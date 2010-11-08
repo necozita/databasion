@@ -14,37 +14,37 @@ module Databasion
   
   @@config = nil
   
-  def self.run(system, config=nil, opts=nil)
+  def self.run(system, opts=nil)
     LOGGER.level = Logger::INFO
     
-    raise DatabasionError, 'Databasion requires a YAML config file path.' if config.nil?
-    @@config = YAML.load(File.open(config))
+    raise DatabasionError, 'Databasion requires a YAML config file path.' if opts[:config].nil?
+    @@config = YAML.load(File.open(opts[:config]))
     
     case system
     when "google"
-      run_google
+      run_google(opts)
     when "migrate"
-      run_migrate
+      run_migrate(opts)
     when "load"
       run_load(opts)
     when "svn"
-      run_svn
+      run_svn(opts)
     when "git"
-      run_git
+      run_git(opts)
     when "cron"
-      run_cron
+      run_cron(opts)
     end
   end
   
   private
-  def self.run_google
+  def self.run_google(opts)
     Databasion::GoogleLoader.config = @@config
-    Databasion::GoogleLoader.run
+    Databasion::GoogleLoader.run(opts)
   end
   
-  def self.run_migrate
+  def self.run_migrate(opts)
     Databasion::Migrate.config = @@config
-    Databasion::Migrate.run
+    Databasion::Migrate.run(opts)
   end
   
   def self.run_load(opts)
@@ -52,19 +52,19 @@ module Databasion
     Databasion::LoadData.run(opts)
   end
   
-  def self.run_svn
+  def self.run_svn(opts)
     Databasion::SvnCommitter.config = @@config
     Databasion::SvnCommitter.commit
   end
   
-  def self.run_git
+  def self.run_git(opts)
     Databasion::GitCommitter.config = @@config
     Databasion::GitCommitter.commit
   end
   
-  def self.run_cron
+  def self.run_cron(opts)
     Databasion::CronSystem.config = @@config
-    Databasion::CronSystem.run
+    Databasion::CronSystem.run(opts)
   end
 
   def self.set_ar_logger

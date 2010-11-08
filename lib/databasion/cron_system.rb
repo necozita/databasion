@@ -8,6 +8,7 @@ module Databasion
     
     def self.config?
       raise CronSystemError, 'CronSystem cannot load without a config.' unless defined?(@@config)
+      raise CronSystemError, 'CronSystem now requires an environments config section.' unless defined?(@@config['environments'])
       true
     end
     
@@ -20,15 +21,17 @@ module Databasion
       @@config
     end
     
-    def self.run
+    def self.run(opts)
       Databasion::GoogleLoader.config = @@config
-      version = Databasion::GoogleLoader.run_version
+      version = Databasion::GoogleLoader.run_version(opts)
       
-      if File.exist?(@@config['cron']['version']['file'])
-        old_version = File.open(@@config['cron']['version']['file']).readline.strip
+      version_file = "%s/version_%s" % [@@config['project_base'], opts[:env]]
+      
+      if File.exist?(version_file)
+        old_version = File.open(version_file).readline.strip
         if version > old_version
           Databasion::LOGGER.info "Version changed, running databasion."
-          system "cd %s && databasion %s" % [@@config['cron']['project_base'], @@config['cron']['options']]
+          system "cd %s && %s %s" % [@@config['project_base'], File.dirname(__FILE__) + '/../../bin/databasion', @@config['environments'][opts[:env]]['cron_options']]
           write_version(version)
         elsif version < old_version
           Databasion::LOGGER.info "Version rollback is currently not implemented."
@@ -37,13 +40,13 @@ module Databasion
         end
       else
         Databasion::LOGGER.info "CronSystem running for the first time."
-        system "cd %s && databasion %s" % [@@config['cron']['project_base'], @@config['cron']['options']]
-        write_version(version)
+        system "cd %s && %s %s" % [@@config['project_base'], File.dirname(__FILE__) + '/../../bin/databasion', @@config['environments'][opts[:env]]['cron_options']]
+        write_version(version, version_file)
       end
     end
     
-    def self.write_version(version)
-      File.open(@@config['cron']['version']['file'], 'w') do |file|
+    def self.write_version(version, version_file)
+      File.open(version_file, 'w') do |file|
         file.write version
       end
     end

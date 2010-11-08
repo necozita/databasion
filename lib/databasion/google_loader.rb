@@ -5,9 +5,10 @@ module Databasion
   class GoogleLoaderError < StandardError; end
   
   class GoogleLoader
+    
+    @@session = nil
 
-    @@master_sheet  = 'Database'
-    @@version_sheet = 'Version'
+    @@environment_sheet = 'Environments'
     
     @@table_def  = 'table'
     @@field_def  = 'field'
@@ -33,20 +34,12 @@ module Databasion
       @@session
     end
     
-    def self.master_sheet=(master)
-      @@master_sheet = master
+    def self.environment_sheet=(environment)
+      @@environment_sheet = environment
     end
     
-    def self.master_sheet
-      @@master_sheet
-    end
-    
-    def self.version_sheet=(version)
-      @@version_sheet = version
-    end
-    
-    def self.version_sheet
-      @@version_sheet
+    def self.environment_sheet
+      @@environment_sheet
     end
     
     def self.login
@@ -57,7 +50,8 @@ module Databasion
       end
     end
     
-    def self.run
+    def self.run(opts=nil)
+      @environment = opts[:env]
       config?
       login
       process.each do |data_hash|
@@ -65,10 +59,10 @@ module Databasion
       end
     end
     
-    def self.run_version
+    def self.run_version(opts=nil)
       config?
-      login
-      fetch_version
+      login if session.nil?
+      fetch_environment_version(opts)
     end
     
     private
@@ -93,7 +87,7 @@ module Databasion
       master_list = []
       header_info = nil
       spreadsheet.worksheets.each do |worksheet|
-        if worksheet.title == master_sheet
+        if worksheet.title == @environment
           worksheet.rows.each_with_index do |row, index|
             if index == 0
               header_info = row
@@ -144,8 +138,8 @@ module Databasion
             types.push type unless type.empty?
           end
         when @@index_def
-          row.each_with_index do |index, i|
-            indexes.push i-1 unless index.empty? or i == 0
+          row.each_with_index do |field, i|
+            indexes.push i-1 unless field.empty? or i == 0
           end
         when @@ignore_def
           row.each_with_index do |ignore, i|
@@ -169,19 +163,20 @@ module Databasion
       }
     end
     
-    def self.fetch_version
+    def self.fetch_environment_version(opts)
       version = nil
       @@config['sheets'].each do |token|
         spreadsheet = @@session.spreadsheet_by_key(token['key'])
         spreadsheet.worksheets.each do |worksheet|
-          if worksheet.title == version_sheet
-            worksheet.rows.each do |row|
-              version = row[0]
+          if worksheet.title == environment_sheet
+            worksheet.rows.each_with_index do |row, index|
+              next if index == 0
+              version = row[1] if row[0] == opts[:env]
             end
           end
         end
       end
-      raise GoogleLoaderError, "A Version spreadsheet was not found in any of the Google Spreadsheets supplied in google.yml" if version.nil?
+      raise GoogleLoaderError, "An Environments spreadsheet was not found in any of the Google Spreadsheets supplied in google.yml" if version.nil?
       version
     end
     

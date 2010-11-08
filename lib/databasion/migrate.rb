@@ -8,7 +8,7 @@ module Databasion
       @@config = config
     end
     
-    def self.run
+    def self.run(opts)
       require 'migration_helpers/init'
 
       files = Dir["%s/*.yml" % @@config['output']['yaml_path']]

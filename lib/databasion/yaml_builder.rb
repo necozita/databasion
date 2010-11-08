@@ -33,7 +33,7 @@ module Databasion
       end
       indexes = ''
       data_hash['indexes'].each do |index|
-        indexes +=  "%s, " % index unless data_hash['ignore_cols'].include?(index)
+        indexes +=  "%s, " % data_hash['fields'][index] unless data_hash['ignore_cols'].include?(index)
       end
       yaml_output += "  indexes: [%s]\n" % indexes.strip.chop
       yaml_output += "  connection:\n"

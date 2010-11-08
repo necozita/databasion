@@ -31,7 +31,7 @@ None of this would really work if there weren't some conventions in place.  The 
 
 ### Environment and Version Control
 
-In order to manage your _environments_ and _versions_ of the data for each environment, an __Environment__ spreadsheet is required.
+In order to manage your _environments_ and _versions_ of the data for each environment, an __Environments__ spreadsheet is required.
 
 #### Keywords
 
@@ -52,7 +52,7 @@ A typical spreadsheet might look like the following.
 
 Versions are tracked by a locally written version file when databasion is ran with the _--cron_ switch.
 
-You will also need to create spreadsheets named after the typical _Development, Test, Production_ keywords.  Within each spreadsheet, database descriptions need to be defined as written below.  The column names are required.
+You will also need to create spreadsheets named after the typical _development, test, production_ keywords as listed in the Environments spreadsheet.  Within each spreadsheet, database descriptions need to be defined as written below.  The column names are required.
 
 Note: Non-standard environments can also be created, however, they are treated as special case and not part of the environment chain.
 
@@ -192,7 +192,7 @@ There is now a system in place to do crontab driven auto-updates.  This allows t
 
 First update _config/google.yml_'s environment section to reflect your project settings for each given environment.  The _options_ are standard databasion switches.
 
-Next, add an entry for your environment in the _Environment_ spreadsheet, along with the starting version number.  When using this to manage the project, if the number is higher than before then the system will be updated.  Currently version controlled rollbacks are not implemented.
+Next, add an entry for your environment in the _Environments_ spreadsheet, along with the starting version number.  When using this to manage the project, if the number is higher than before then the system will be updated.  Currently version controlled rollbacks are not implemented.
 
 Finally, add the databasion script to crontab.
 
