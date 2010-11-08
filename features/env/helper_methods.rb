@@ -10,3 +10,7 @@ def load_parse_data
     'connection'  => {'database' => 'moon', 'dbname' => 'db1'}
   }
 end
+
+def load_opts
+  { :env => 'development' }
+end

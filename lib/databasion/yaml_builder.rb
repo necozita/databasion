@@ -6,9 +6,10 @@ module Databasion
   
   class YamlBuilder
     
-    def self.run(data_hash, output_path=nil)
-      raise YamalizeError, 'Databasion::YamlBuilder requires an output path.' if output_path.nil?
-      @@output_path = output_path
+    def self.run(data_hash, config=nil, opts=nil)
+      raise YamalizeError, 'Databasion::YamlBuilder requires an output path.' if config['output']['yaml_path'].nil?
+      @@config = config
+      @@environment = opts[:env]
       
       Databasion::LOGGER.info "Yamlbating %s..." % data_hash['name']
 
@@ -61,15 +62,16 @@ module Databasion
     end
     
     def self.write(file_name, yaml_output)
-      check_output_path
-      f = File.new("%s/%s.yml" % [@@output_path, file_name], 'w')
+      path = @@environment + "/" + @@config['output']['yaml_path']
+      check_output_path(path)
+      f = File.new("%s/%s.yml" % [path, file_name], 'w')
       f.write(yaml_output)
       f.close
     end
     
-    def self.check_output_path
-      unless File.exist?(@@output_path)
-        FileUtils.mkdir_p(@@output_path)
+    def self.check_output_path(path)
+      unless File.exist?(path)
+        FileUtils.mkdir_p(path)
       end
     end
     

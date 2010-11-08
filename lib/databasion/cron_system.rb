@@ -25,7 +25,7 @@ module Databasion
       Databasion::GoogleLoader.config = @@config
       version = Databasion::GoogleLoader.run_version(opts)
       
-      version_file = "%s/version_%s" % [@@config['project_base'], opts[:env]]
+      version_file = "%s/config/version_%s" % [@@config['project_base'], opts[:env]]
       
       if File.exist?(version_file)
         old_version = File.open(version_file).readline.strip

@@ -10,11 +10,11 @@ module Databasion
     
     @@migration_start = 100
     
-    def self.run(file_list=[], config=nil)
+    def self.run(file_list=[], config=nil, opts=nil)
       raise BuildMigrationError, 'Databasion::BuildMigration requires an array list of files.  Try GoogleLoading first.' if file_list.empty?
       raise BuildMigrationError, 'Databasion::BuildMigration requires a parsed YAML config.' if config.nil?
       @@config = config
-      
+      @@environment = opts[:env]
       parse(file_list)
     end
     
@@ -85,7 +85,7 @@ module Databasion
     end
     
     def self.write_migration(migration, file_name, sub_path)
-      path = @@config['output']['migrations']['path'] + "/" + sub_path
+      path = @@environment + "/" + @@config['output']['migrations']['path'] + "/" + sub_path
       check_output_path(path)
       unless migration_exists?(file_name)
         f = File.new("%s/%s_%s_migration.rb" % [path, @@migration_start, file_name], 'w')
@@ -100,8 +100,9 @@ module Databasion
     end
     
     def self.write_ruby(model, file_name)
-      check_output_path(@@config['output']['migrations']['models'])
-      f = File.new("%s/%s.rb" % [@@config['output']['migrations']['models'], file_name], 'w')
+      path = @@environment + "/" + @@config['output']['migrations']['models']
+      check_output_path(path)
+      f = File.new("%s/%s.rb" % [path, file_name], 'w')
       f.write(model)
       f.close
     end
@@ -113,19 +114,18 @@ module Databasion
         config.delete('dbname')
         output[dbname] = config
       end
-      f = File.open("config/database.yml", 'w')
+      f = File.open("config/database.%s.yml" % @@environment, 'w')
       f.write(YAML.dump(output))
       f.close
       Databasion::LOGGER.info "Wrote database config..."
     end
     
     def self.migration_exists?(file_name)
-      return true if find_migration_file(file_name)
-      false
+      find_migration_file(file_name) ? true : false
     end
     
     def self.find_migration_file(file_name)
-      files = Dir[@@config['output']['migrations']['path'] + "/**/*.rb"]
+      files = Dir[@@environment + "/" + @@config['output']['migrations']['path'] + "/**/*.rb"]
       files.each do |file|
         chunks = file.split("/").pop.split(".")[0].split("_")
         return file if chunks[1..chunks.size-2].join("_") == file_name

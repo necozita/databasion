@@ -51,11 +51,11 @@ module Databasion
     end
     
     def self.run(opts=nil)
-      @environment = opts[:env]
+      @@environment = opts[:env]
       config?
       login
       process.each do |data_hash|
-        Databasion::YamlBuilder.run(data_hash, @@config['output']['yaml_path'])
+        Databasion::YamlBuilder.run(data_hash, @@config, opts)
       end
     end
     
@@ -87,7 +87,7 @@ module Databasion
       master_list = []
       header_info = nil
       spreadsheet.worksheets.each do |worksheet|
-        if worksheet.title == @environment
+        if worksheet.title == @@environment
           worksheet.rows.each_with_index do |row, index|
             if index == 0
               header_info = row
