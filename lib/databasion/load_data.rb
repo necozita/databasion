@@ -16,7 +16,7 @@ module Databasion
       Databasion.set_ar_logger
       Databasion::LOGGER.info "Updating from YAML..."
 
-      models = Dir[@@config['output']['migrations']['models'] + "/*.rb"].each { |file| load file }
+      models = Dir[opts[:env] + "/" + @@config['output']['migrations']['models'] + "/*.rb"].each { |file| load file }
 
       models.each do |model|
         f = model.split('/')
@@ -27,9 +27,9 @@ module Databasion
         Databasion::LOGGER.info "Loading %s into database..." % camel_name
 
         begin
-          yaml_file = YAML.load_file('%s/%s.yml' % [@@config['output']['yaml_path'], plural_name])
+          yaml_file = YAML.load_file('%s/%s.yml' % [opts[:env] + "/" + @@config['output']['yaml_path'], plural_name])
         rescue
-          yaml_file = YAML.load_file('%s/%s.yml' % [@@config['output']['yaml_path'], normal_name])
+          yaml_file = YAML.load_file('%s/%s.yml' % [opts[:env] + "/" + @@config['output']['yaml_path'], normal_name])
         end
 
         for row in yaml_file['data']
