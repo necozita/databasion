@@ -21,7 +21,7 @@ module Databasion
     private
     def self.configure_start(dbname)
       @@migration_start = 100
-      files = Dir[@@config['output']['migrations']['path'] + "/%s/*.rb" % dbname].collect { |file| file.split("/").pop }.sort
+      files = Dir[@@environment + "/" + @@config['output']['migrations']['path'] + "/%s/*.rb" % dbname].collect { |file| file.split("/").pop }.sort
       @@migration_start = files[files.size-1].split("_")[0].to_i + 1 if files.size > 0
     end
     
