@@ -87,7 +87,7 @@ Next we define the actual table spreadsheets.
 * comment - Ideally a description of the field, what the values means, etc.
 * table - The name of the table, and an optional comma delimited 'false' if the table name should not be auto-pluralized.
 * index - If something is written in a columns field here, it will get flagged as an index and created via add_index(table, [fields]).
-* field - The name of the table column.
+* field - The name of the table column.  One can optionally make it a comma delimited list and add _primary_ for multiple primary keys.  All _id_ fields are automatically make into a primary key.
 * type  - A comma delimited list giving the type of the column (using Ruby migration terms), optional size, and optional default value.
 
 Note: If an 'id' column is specified, then it is assumed the id's are supplied by hand.  Auto-incrementation is disabled, and 'id' is the primary key.

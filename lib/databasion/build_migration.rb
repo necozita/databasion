@@ -47,10 +47,11 @@ module Databasion
     def self.migration_class(meta)
       template = ''
       File.open(File.expand_path(File.dirname(__FILE__)) + '/templates/migration.erb', 'r') { |f| template = f.read }
-      class_name = meta['name'].camelize
-      table_name = meta['name']
-      indexes = meta['indexes']
-      fields = meta['fields']
+      class_name  = meta['name'].camelize
+      table_name  = meta['name']
+      indexes     = meta['indexes']
+      fields      = meta['fields']
+      primaries   = meta['primaries']
 
       migration = ERB.new(template, nil, ">")
       migration.result(binding)

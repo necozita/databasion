@@ -5,9 +5,7 @@ class <%= class_name %>Migration < ActiveRecord::Migration
       t.<%= field['type'] %> :<%= field['field'] %><%= ', :limit => %s' % field['size'] if field['size'] %><%= "\n" %>
     <% end %>
     end
-    <% if fields.collect {|f| f['field']}.include?('id') %>
-    execute "ALTER TABLE <%= table_name %> ADD PRIMARY KEY (id)"
-    <% end %>
+    execute "ALTER TABLE <%= table_name %> ADD PRIMARY KEY (<%= primaries.collect {|p| "%s, " % p }.to_s.strip.chop %>)"
     <% if indexes.size > 1 %>
     add_index :<%= table_name %>, [<%= indexes.collect {|i| ":%s" % i }.join(", ") %>]
     <% elsif indexes.size == 1 %>

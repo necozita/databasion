@@ -37,6 +37,12 @@ module Databasion
         indexes +=  "%s, " % data_hash['fields'][index] unless data_hash['ignore_cols'].include?(index)
       end
       yaml_output += "  indexes: [%s]\n" % indexes.strip.chop
+      primaries = ''
+      data_hash['primaries'].push 'id' if data_hash['fields'].include?('id') and !data_hash['primaries'].include?('id')
+      data_hash['primaries'].each do |primary|
+        primaries += "%s, " % primary
+      end
+      yaml_output += "  primaries: [%s]\n" % primaries.strip.chop
       yaml_output += "  connection:\n"
       data_hash['connection'].each do |key, value|
         yaml_output += "    %s: %s\n" % [key, value] unless ['spreadsheet', 'options'].include?(key)

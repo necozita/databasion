@@ -107,12 +107,13 @@ module Databasion
     end
     
     def self.parse(worksheet)
-      name    = ''
-      plural  = true
-      fields  = []
-      types   = []
-      indexes = []
-      data    = []
+      name      = ''
+      plural    = true
+      fields    = []
+      primaries = []
+      types     = []
+      indexes   = []
+      data      = []
 
       ignore_cols = []
       
@@ -131,7 +132,15 @@ module Databasion
           end
         when @@field_def
           row.each do |field|
-            fields.push field unless field.empty?
+            begin
+              unless field.empty?
+                d = field.split(",")
+                primaries.push d[0] if d[1].strip == 'primary'
+                fields.push d[0]
+              end
+            rescue
+              fields.push field unless field.empty?
+            end
           end
         when @@type_def
           row.each do |type|
@@ -156,6 +165,7 @@ module Databasion
         'name'        => name,
         'plural'      => plural,
         'fields'      => fields[1..fields.size],
+        'primaries'   => primaries,
         'types'       => types[1..types.size],
         'indexes'     => indexes,
         'data'        => data,
