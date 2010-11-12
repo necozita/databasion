@@ -45,7 +45,7 @@ module Databasion
       yaml_output += "  primaries: [%s]\n" % primaries.strip.chop
       yaml_output += "  connection:\n"
       data_hash['connection'].each do |key, value|
-        yaml_output += "    %s: %s\n" % [key, value] unless ['spreadsheet', 'options'].include?(key)
+        yaml_output += "    %s: %s\n" % [key, value] unless ['spreadsheet'].include?(key)
       end
       yaml_output += "\n"
     end

@@ -1,6 +1,6 @@
 class <%= class_name %>Migration < ActiveRecord::Migration
   def self.up
-    create_table :<%= table_name %><%= ', :id => false' if fields.collect {|f| f['field']}.include?('id') %> do |t|
+    create_table :<%= table_name %><%= ', :id => false' if fields.collect {|f| f['field']}.include?('id') %><%= ', :options => "%s"' % options if options %> do |t|
     <% for field in fields %>
       t.<%= field['type'] %> :<%= field['field'] %><%= ', :limit => %s' % field['size'] if field['size'] %><%= "\n" %>
     <% end %>

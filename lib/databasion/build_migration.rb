@@ -49,6 +49,7 @@ module Databasion
       File.open(File.expand_path(File.dirname(__FILE__)) + '/templates/migration.erb', 'r') { |f| template = f.read }
       class_name  = meta['name'].camelize
       table_name  = meta['name']
+      options     = meta['connection']['options']
       indexes     = meta['indexes']
       fields      = meta['fields']
       primaries   = meta['primaries']
