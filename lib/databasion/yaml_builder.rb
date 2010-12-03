@@ -32,17 +32,16 @@ module Databasion
         yaml_output += "      size: %s\n" % type_data[1] if type_data[1]
         yaml_output += "      default: %s\n" % type_data[2] if type_data[2]
       end
-      indexes = ''
-      data_hash['indexes'].each do |index|
-        indexes +=  "%s, " % data_hash['fields'][index] unless data_hash['ignore_cols'].include?(index)
+      yaml_output += "  auto: %s\n" % data_hash['auto']
+      yaml_output += "  indexes:\n"
+      data_hash['indexes'].each do |key, indexes|
+        index_list = []
+        indexes.each do |index|
+          index_list.push data_hash['fields'][index] unless data_hash['ignore_cols'].include?(index)
+        end
+        yaml_output += "    - index: [%s]\n" % index_list.join(", ")
       end
-      yaml_output += "  indexes: [%s]\n" % indexes.strip.chop
-      primaries = ''
-      data_hash['primaries'].push 'id' if data_hash['fields'].include?('id') and !data_hash['primaries'].include?('id')
-      data_hash['primaries'].each do |primary|
-        primaries += "%s, " % primary
-      end
-      yaml_output += "  primaries: [%s]\n" % primaries.strip.chop
+      yaml_output += "  primaries: [%s]\n" % data_hash['primaries'].join(", ") unless data_hash['primaries'].empty?
       yaml_output += "  connection:\n"
       data_hash['connection'].each do |key, value|
         yaml_output += "    %s: %s\n" % [key, value] unless ['spreadsheet'].include?(key)

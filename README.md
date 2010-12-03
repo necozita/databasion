@@ -6,6 +6,8 @@ A database management tool.  The theory is that a designer/planner can edit appl
 
 TODO: While this system uses Rails Migrations, it isn't taking full advantage of them (i.e. tracking changes, allowing for rollbacks, etc).
 
+NOTE: The system is currently undergoing major changes, and will not remain backwards compatible until up until a 1.0 release.
+
 ## Requirements
 
 ### Ruby
@@ -16,7 +18,7 @@ TODO: While this system uses Rails Migrations, it isn't taking full advantage of
 
 * ActiveRecord >= 2.3.5
 * ActiveSupport >= 2.3.5
-* Google Spreadsheet >= 0.1.1
+* Google Spreadsheet >= 0.1.2
 * Spreadsheet >= 0.6.4.1
 
 ## Installation
@@ -62,7 +64,7 @@ Note: Non-standard environments can also be created, however, they are treated a
 |:------------|:------|:--------|:--------|:--------|:-------|:---------|:----|:-------
 | superheroes | db1   | db_test | dbuser  | dbuser  | mysql  | 127.0.0.1|     |        
 
-The options column currently support's _force_, which tells the database to drop and recreate the table.
+The options column currently supports any SQL commands that can typically be passed to a Rails Migration.
 
 Next we define the actual table spreadsheets.
 
@@ -73,7 +75,7 @@ Next we define the actual table spreadsheets.
 | ignore   |             |              |                    | testing
 | comment  |             |              |                    |
 | table    | superheroes |              |                    |
-| index    | yes         |              |                    | 
+| index    | yes         |              |                    |
 | field    | id          | name         | power              | cape 
 | type     | integer     | string, 20   | string, 20, Wimp   | boolean
 |          | 1           | Brian Jones  | Ruby Hacker        | false
@@ -86,11 +88,9 @@ Next we define the actual table spreadsheets.
 * ignore - Anything written in this column will cause this column and it's data to be ignored, with the exception of _environment names_.  See the Environment and Version Control section below for further usage.
 * comment - Ideally a description of the field, what the values means, etc.
 * table - The name of the table, and an optional comma delimited 'false' if the table name should not be auto-pluralized.
-* index - If something is written in a columns field here, it will get flagged as an index and created via add_index(table, [fields]).
-* field - The name of the table column.  One can optionally make it a comma delimited list and add _primary_ for multiple primary keys.  All _id_ fields are automatically make into a primary key.
+* index - This will create an index on the designated field.  If a multi-index is required, indices will be grouped by unique names.  Multiple multi-indices are possible.
+* field - The name of the table column, with an optional comma delimited 'auto' or 'primary' parameter.  Auto is strictly limited to an 'id' field, and enables auto incrementation.
 * type  - A comma delimited list giving the type of the column (using Ruby migration terms), optional size, and optional default value.
-
-Note: If an 'id' column is specified, then it is assumed the id's are supplied by hand.  Auto-incrementation is disabled, and 'id' is the primary key.
 
 __Ruby Migration Types__
 
@@ -162,7 +162,7 @@ If the currently created databasion project is committed to SVN, running the _--
 
 Much like SVN, if the project is commited to a GIT repo, the _--git_ switch will auto-add and commit all the project files.  If there isn't a repository, it will also initialize a new one for you.
 
-## Keyword Environment Management
+## Keyword Environment Management (Currently not implemeneted)
 
 Keywords are also supported in the _ignore_ columns and rows of table definitions.  This allows us to not inadvertently add columns or data to systems which aren't configured to use them yet.  The following is an example.
 
@@ -204,9 +204,9 @@ This checks the Environment spreadsheet once a minute, and if the version for th
 
 Note:  This could easily be used from the commandline as well, and not just crontab.
 
-## Roadmap
+## Planned Features
 
-Long and winding.
+Plugins - It would be nice to be able to build plugin support so people can do pre/post processing of the data, and/or export out to other formats besides YAML, etc.  I also plan on designing this in such a way so that it isn't strictly RDMBS centric.
 
 ## Testing
 

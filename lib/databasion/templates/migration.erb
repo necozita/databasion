@@ -1,15 +1,15 @@
 class <%= class_name %>Migration < ActiveRecord::Migration
   def self.up
-    create_table :<%= table_name %><%= ', :id => false' if fields.collect {|f| f['field']}.include?('id') %><%= ', :options => "%s"' % options if options %> do |t|
+    create_table :<%= table_name %><%= ', :id => false' if !auto %><%= ', :options => "%s"' % options if options %> do |t|
     <% for field in fields %>
-      t.<%= field['type'] %> :<%= field['field'] %><%= ', :limit => %s' % field['size'] if field['size'] %><%= "\n" %>
+      t.<%= field['type'] %> :<%= field['field'] %><%= ', :limit => %s' % field['size'] if field['size'] %><%= ', :default => "%s"' % field['default'] if field['default'] %><%= "\n" %>
     <% end %>
     end
+    <% if primaries.size > 0 and !auto %>
     execute "ALTER TABLE <%= table_name %> ADD PRIMARY KEY (<%= primaries.collect {|p| "%s, " % p }.to_s.strip.chop %>)"
-    <% if indexes.size > 1 %>
-    add_index :<%= table_name %>, [<%= indexes.collect {|i| ":%s" % i }.join(", ") %>]
-    <% elsif indexes.size == 1 %>
-    add_index :<%= table_name %>, :<%= indexes[0] %><%= "\n" %>
+    <% end %>
+    <% indexes.each do |index| %>
+    add_index :<%= table_name %>, [<%= index['index'].collect {|i| ":%s" % i }.join(", ") %>]
     <% end %>
   end
   def self.down

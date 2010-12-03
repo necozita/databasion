@@ -50,9 +50,10 @@ module Databasion
       class_name  = meta['name'].camelize
       table_name  = meta['name']
       options     = meta['connection']['options']
-      indexes     = meta['indexes']
+      indexes     = meta['indexes'] ? meta['indexes'] : []
+      primaries   = meta['primaries'] ? meta['primaries'] : []
       fields      = meta['fields']
-      primaries   = meta['primaries']
+      auto        = meta['auto']
 
       migration = ERB.new(template, nil, ">")
       migration.result(binding)

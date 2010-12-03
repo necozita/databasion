@@ -10,11 +10,11 @@ module Databasion
 
     @@environment_sheet = 'Environments'
     
-    @@table_def  = 'table'
-    @@field_def  = 'field'
-    @@type_def   = 'type'
-    @@index_def  = 'index'
-    @@ignore_def = 'ignore'
+    @@table_def   = 'table'
+    @@field_def   = 'field'
+    @@type_def    = 'type'
+    @@index_def   = 'index'
+    @@ignore_def  = 'ignore'
     
     def self.config?
       raise GoogleLoaderError, 'GoogleLoader cannot load without a config.' unless defined?(@@config)
@@ -109,10 +109,11 @@ module Databasion
     def self.parse(worksheet)
       name      = ''
       plural    = true
+      auto      = false
       fields    = []
       primaries = []
       types     = []
-      indexes   = []
+      indexes   = {}
       data      = []
 
       ignore_cols = []
@@ -135,7 +136,16 @@ module Databasion
             begin
               unless field.empty?
                 d = field.split(",")
-                primaries.push d[0] if d[1].strip == 'primary'
+                case d[1].strip
+                when 'primary'
+                  primaries.push d[0]
+                when 'auto'
+                  if d[0] == 'id'
+                    auto = true
+                  else
+                    primaries.push d[0]  
+                  end
+                end
                 fields.push d[0]
               end
             rescue
@@ -148,7 +158,9 @@ module Databasion
           end
         when @@index_def
           row.each_with_index do |field, i|
-            indexes.push i-1 unless field.empty? or i == 0
+            unless field.empty? or i == 0
+              indexes.include?(field) ? (indexes[field].push i-1) : (indexes[field] ||= [i-1])
+            end
           end
         when @@ignore_def
           row.each_with_index do |ignore, i|
@@ -165,6 +177,7 @@ module Databasion
         'name'        => name,
         'plural'      => plural,
         'fields'      => fields[1..fields.size],
+        'auto'        => auto,
         'primaries'   => primaries,
         'types'       => types[1..types.size],
         'indexes'     => indexes,
