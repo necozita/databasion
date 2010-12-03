@@ -2,11 +2,11 @@
 
 ## Google Spreadsheet/Excel -> YAML -> Ruby Migration -> Database Management Tool
 
-A database management tool.  The theory is that a designer/planner can edit application data and a programmer can setup the database and it's fields, all in one happy little place.  As tables are added and data is changed, if the script is run once again it will update the target database.
+A database management tool.  The theory is that a designer/planner can edit application data while a programmer setups up the database schema and it's fields, all in one happy little place.  As tables are added and data is changed, if the script is run once again it will update the target database.
 
 TODO: While this system uses Rails Migrations, it isn't taking full advantage of them (i.e. tracking changes, allowing for rollbacks, etc).
 
-NOTE: The system is currently undergoing major changes, and will not remain backwards compatible until up until a 1.0 release.
+NOTE: The system is currently undergoing major changes, and will not remain backwards compatible up until roughly a 0.9 release.
 
 ## Requirements
 
@@ -162,7 +162,7 @@ If the currently created databasion project is committed to SVN, running the _--
 
 Much like SVN, if the project is commited to a GIT repo, the _--git_ switch will auto-add and commit all the project files.  If there isn't a repository, it will also initialize a new one for you.
 
-## Keyword Environment Management (Currently not implemeneted)
+## Keyword Environment Management (Currently not implemented)
 
 Keywords are also supported in the _ignore_ columns and rows of table definitions.  This allows us to not inadvertently add columns or data to systems which aren't configured to use them yet.  The following is an example.
 
