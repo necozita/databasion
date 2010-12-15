@@ -1,3 +1,6 @@
+### 0.2.1
+* [FIXED] Tables without an 'id' field weren't updating via the load command and bailing, a dramatic oversight on my part.  Databasion now includes the composite primary keys gem for ActiveRecord, and correctly drops and loads master data now.
+
 ### 0.2.0
 
 * [FIXED] Fields flagged with an index were not properly referenced.

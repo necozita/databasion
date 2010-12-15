@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Brian Jones", "Istpika"]
-  s.date = %q{2010-12-03}
+  s.date = %q{2010-12-15}
   s.default_executable = %q{databasion}
   s.email = %q{mojobojo@gmail.com}
   s.executables = ["databasion"]
@@ -71,17 +71,20 @@ Gem::Specification.new do |s|
       s.add_runtime_dependency(%q<activesupport>, [">= 2.3.5"])
       s.add_runtime_dependency(%q<google-spreadsheet-ruby>, [">= 0.1.2"])
       s.add_runtime_dependency(%q<spreadsheet>, [">= 0.6.4.1"])
+      s.add_runtime_dependency(%q<composite_primary_keys>, [">= 3.0.9"])
     else
       s.add_dependency(%q<activerecord>, [">= 2.3.5"])
       s.add_dependency(%q<activesupport>, [">= 2.3.5"])
       s.add_dependency(%q<google-spreadsheet-ruby>, [">= 0.1.2"])
       s.add_dependency(%q<spreadsheet>, [">= 0.6.4.1"])
+      s.add_dependency(%q<composite_primary_keys>, [">= 3.0.9"])
     end
   else
     s.add_dependency(%q<activerecord>, [">= 2.3.5"])
     s.add_dependency(%q<activesupport>, [">= 2.3.5"])
     s.add_dependency(%q<google-spreadsheet-ruby>, [">= 0.1.2"])
     s.add_dependency(%q<spreadsheet>, [">= 0.6.4.1"])
+    s.add_dependency(%q<composite_primary_keys>, [">= 3.0.9"])
   end
 end
 

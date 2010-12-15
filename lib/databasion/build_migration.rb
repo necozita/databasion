@@ -73,6 +73,14 @@ module Databasion
       fields.delete('spreadsheet')
       fields.delete('options')
       fields.delete('dbname')
+      
+      keys = []
+      if meta['auto'] == false
+        meta['primaries'].each do |key|
+          keys << key
+        end
+        keys << 'id' if meta['fields'].collect { |field| field['field'] }.include?('id') and !keys.include?('id')
+      end
 
       model = ERB.new(template, nil, ">")
       model.result(binding)

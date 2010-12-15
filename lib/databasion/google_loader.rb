@@ -172,6 +172,8 @@ module Databasion
           end
         end
       end
+      
+      raise DatabasionError, "You cannot create a table without at least one 'auto' field, and/or one or more 'primary' fields." if primaries.empty? and !auto
 
       {
         'name'        => name,

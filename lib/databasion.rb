@@ -1,6 +1,7 @@
 require 'rubygems'
 require 'logger'
 require 'active_record'
+require 'composite_primary_keys'
 
 APP_PATH = File.dirname(File.expand_path(__FILE__))
 $: << APP_PATH

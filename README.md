@@ -20,6 +20,7 @@ NOTE: The system is currently undergoing major changes, and will not remain back
 * ActiveSupport >= 2.3.5
 * Google Spreadsheet >= 0.1.2
 * Spreadsheet >= 0.6.4.1
+* Composite Primary Keys >= 3.0.9
 
 ## Installation
 
@@ -76,7 +77,7 @@ Next we define the actual table spreadsheets.
 | comment  |             |              |                    |
 | table    | superheroes |              |                    |
 | index    | yes         |              |                    |
-| field    | id          | name         | power              | cape 
+| field    | id, primary | name         | power              | cape 
 | type     | integer     | string, 20   | string, 20, Wimp   | boolean
 |          | 1           | Brian Jones  | Ruby Hacker        | false
 |          | 2           | Superman     | Invincible         | true
@@ -89,7 +90,7 @@ Next we define the actual table spreadsheets.
 * comment - Ideally a description of the field, what the values means, etc.
 * table - The name of the table, and an optional comma delimited 'false' if the table name should not be auto-pluralized.
 * index - This will create an index on the designated field.  If a multi-index is required, indices will be grouped by unique names.  Multiple multi-indices are possible.
-* field - The name of the table column, with an optional comma delimited 'auto' or 'primary' parameter.  Auto is strictly limited to an 'id' field, and enables auto incrementation.
+* field - The name of the table column, with an optional comma delimited 'auto' or 'primary' parameter.  Auto is strictly limited to an 'id' field, and enables auto incrementation.  At least one field _must_ be labeled 'primary' or 'auto', otherwise the system will bail while trying to build that table.
 * type  - A comma delimited list giving the type of the column (using Ruby migration terms), optional size, and optional default value.
 
 __Ruby Migration Types__
@@ -172,7 +173,7 @@ Keywords are also supported in the _ignore_ columns and rows of table definition
  | comment      |             |              |                    |         |                       
  | table        | superheroes |              |                    |         |                       
  | index        | yes         |              |                    |         |                       
- | field        | id          | name         | power              | cape    | mask                  
+ | field        | id, primary | name         | power              | cape    | mask                  
  | type         | integer     | string, 20   | string, 20, Wimp   | boolean | boolean               
  |              | 1           | Brian Jones  | Ruby Hacker        | false   | false                 
  |              | 2           | Superman     | Invincible         | true    | false                 

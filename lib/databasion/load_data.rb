@@ -32,16 +32,16 @@ module Databasion
           yaml_file = YAML.load_file('%s/%s.yml' % [opts[:env] + "/" + @@config['output']['yaml_path'], normal_name])
         end
 
-        for row in yaml_file['data']
-          klass = eval("%s.new" % camel_name)
-          model = camel_name.constantize.find(:first, :conditions => ['id = ?', row['id']])
-          if model
-            camel_name.constantize.update(model.id, row)
-          else
-            klass.id = row['id']
-            klass.update_attributes(row)
+        if yaml_file['data']
+          camel_name.constantize.delete_all
+          yaml_file['data'].each do |row|
+            klass = eval("%s.new" % camel_name)
+            row.each do |key, value|
+              eval("klass.%s = '%s'" % [key, value])
+            end
+            klass.save
           end
-        end if yaml_file['data']
+        end
       end
     end
     

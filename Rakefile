@@ -8,12 +8,13 @@ Jeweler::Tasks.new do |gem|
   gem.email       = "mojobojo@gmail.com"
   gem.homepage    = "http://github.com/boj/databasion"
   gem.authors     = ["Brian Jones", "Istpika"]
-  gem.version     = "0.2.0"
+  gem.version     = "0.2.1"
 
   gem.add_dependency('activerecord', '>= 2.3.5')
   gem.add_dependency('activesupport', '>= 2.3.5')
   gem.add_dependency('google-spreadsheet-ruby', '>= 0.1.2')
   gem.add_dependency('spreadsheet', '>= 0.6.4.1')
+  gem.add_dependency('composite_primary_keys', '>= 3.0.9')
 end
 
 Jeweler::GemcutterTasks.new
