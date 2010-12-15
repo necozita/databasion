@@ -10,7 +10,7 @@ Jeweler::Tasks.new do |gem|
   gem.authors     = ["Brian Jones", "Istpika"]
   gem.version     = "0.2.1"
 
-  gem.add_dependency('activerecord', '>= 2.3.5')
+  gem.add_dependency('activerecord', '>= 3.0.3')
   gem.add_dependency('activesupport', '>= 2.3.5')
   gem.add_dependency('google-spreadsheet-ruby', '>= 0.1.2')
   gem.add_dependency('spreadsheet', '>= 0.6.4.1')
