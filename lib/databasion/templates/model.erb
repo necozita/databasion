@@ -1,6 +1,6 @@
 class <%= class_name %> < ActiveRecord::Base
   <% if !keys.empty? %>
-  set_primary_keys <%= keys.collect { |key| ":%s, " % key }.to_s.strip.chop %>
+  set_primary_keys <%= keys.collect { |key| ":%s, " % key }.to_s.strip.chop %><%= "\n" %>
   <% end %>
   <%= 'set_table_name "%s"' % table_name unless table_name.nil? %><%= "\n" %>
 end
