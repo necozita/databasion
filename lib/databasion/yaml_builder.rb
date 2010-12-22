@@ -56,9 +56,9 @@ module Databasion
         row.each_with_index do |col, index|
           next if data_hash['ignore_cols'].include?(index)
           if yaml_row.size == 0
-            yaml_row += "  - %s: %s\n" % [data_hash['fields'][index], col]
+            yaml_row += "  - %s: '%s'\n" % [data_hash['fields'][index], col]
           else
-            yaml_row += "    %s: %s\n" % [data_hash['fields'][index], col]
+            yaml_row += "    %s: '%s'\n" % [data_hash['fields'][index], col]
           end
         end
         yaml_output += "%s\n" % yaml_row

@@ -1,3 +1,6 @@
+### 0.2.3
+* [FIXED] JSON-like data wasn't being properly formatted in the yaml_builder, resulting in the system bailing.
+
 ### 0.2.2
 * [FIXED] Template newline bug.
 
