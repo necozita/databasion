@@ -24,6 +24,8 @@ module Databasion
     case system
     when "google"
       run_google(opts)
+    when "file"
+      run_file(opts)
     when "migrate"
       run_migrate(opts)
     when "load"
@@ -41,6 +43,11 @@ module Databasion
   def self.run_google(opts)
     Databasion::GoogleLoader.config = @@config
     Databasion::GoogleLoader.run(opts)
+  end
+  
+  def self.run_file(opts)
+    Databasion::SpreadsheetLoader.config = @@config
+    Databasion::SpreadsheetLoader.run(opts)
   end
   
   def self.run_migrate(opts)
@@ -72,14 +79,15 @@ module Databasion
     ActiveRecord::Base.logger = Databasion::LOGGER
   end
   
-  autoload :Application,    APP_PATH + '/databasion/application.rb'
-  autoload :GoogleLoader,   APP_PATH + '/databasion/google_loader.rb'
-  autoload :YamlBuilder,    APP_PATH + '/databasion/yaml_builder.rb'
-  autoload :Migrate,        APP_PATH + '/databasion/migrate.rb'
-  autoload :BuildMigration, APP_PATH + '/databasion/build_migration.rb'
-  autoload :LoadData,       APP_PATH + '/databasion/load_data.rb'
-  autoload :SvnCommitter,   APP_PATH + '/databasion/svn_committer.rb'
-  autoload :GitCommitter,   APP_PATH + '/databasion/git_committer.rb'
-  autoload :CronSystem,     APP_PATH + '/databasion/cron_system.rb'
+  autoload :Application,       APP_PATH + '/databasion/application.rb'
+  autoload :GoogleLoader,      APP_PATH + '/databasion/google_loader.rb'
+  autoload :SpreadsheetLoader, APP_PATH + '/databasion/spreadsheet_loader.rb'
+  autoload :YamlBuilder,       APP_PATH + '/databasion/yaml_builder.rb'
+  autoload :Migrate,           APP_PATH + '/databasion/migrate.rb'
+  autoload :BuildMigration,    APP_PATH + '/databasion/build_migration.rb'
+  autoload :LoadData,          APP_PATH + '/databasion/load_data.rb'
+  autoload :SvnCommitter,      APP_PATH + '/databasion/svn_committer.rb'
+  autoload :GitCommitter,      APP_PATH + '/databasion/git_committer.rb'
+  autoload :CronSystem,        APP_PATH + '/databasion/cron_system.rb'
   
 end

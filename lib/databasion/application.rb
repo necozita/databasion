@@ -17,6 +17,7 @@ module Databasion
         opt :create, "Create a base deploy directory", :type => String
         opt :config, "Path to YAML config.  Looks for config/google.yml by default", :type => String
         opt :google, "Load data from Google Spreadsheets"
+        opt :file, "Load data from Local Spreadsheets"
         opt :migrate, "Migrate after GoogleLoading"
         opt :load, "Load parsed YAML data into migrated database"
         opt :diff, "Manually check the diff of each database update from the load command"
@@ -52,6 +53,9 @@ module Databasion
       end
       if opts[:google]
         Databasion.run('google', opts)
+      end
+      if opts[:file]
+        Databasion.run('file', opts)
       end
       if opts[:migrate]
         Databasion.run('migrate', opts)
